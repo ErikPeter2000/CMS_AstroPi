@@ -1,4 +1,4 @@
-# CMS_AstroPI
+# CMS_AstroPi
 The AstroPi team at the Cambridge Maths School.
 
 ## Note
