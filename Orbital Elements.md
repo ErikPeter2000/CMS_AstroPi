@@ -36,7 +36,9 @@
 
 11. Vernal Equinox: A line joining the centre of the Earth and the sun. This direction defines the positive X basis vector for the GEC.
 
-12. Eccentric Anomaly: The angle between the perigee and the centre of the ellipse. Similar to True Anomaly, but the angle is a the centre of the ellipse, not the primary body.
+12. Eccentric Anomaly: The angle formed at the centre of the ellipse between the perigee and a point on the auxiliary circle found by projecting the point of the secondary body. Similar to True Anomaly, but the angle is a the centre of the ellipse, not the primary body. It's a pain to calculate as Kepler's equation is transcendental. Below, $E$ is the eccentric anomaly, $M$ is the mean anomaly, and $e$ is the eccentricity.  
+$$ M = E - e\sin{E}$$
+
 
 ## Kepler's Laws
 His three Laws for describing a body in orbit around a more massive body (in his case, it was the planets around the sun).
