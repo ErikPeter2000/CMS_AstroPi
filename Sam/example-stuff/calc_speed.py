@@ -5,7 +5,9 @@ import math
 import matplotlib.pyplot as plt
 import time
 import os
+
 start_time = time.time()
+
 def get_time(image):
     with open(image, 'rb') as image_file:
         img = Image(image_file)
@@ -16,69 +18,45 @@ def get_time(image):
 def get_time_difference(image_1, image_2):
     time_1 = get_time(image_1)
     time_2 = get_time(image_2)
-    time_difference = time_2 - time_1
-    return time_difference.seconds
+    return (time_2 - time_1).seconds
 
 def convert_to_cv(image_1, image_2):
-    image_1_cv = cv2.imread(image_1, 0)
-    image_2_cv = cv2.imread(image_2, 0)
-    return image_1_cv, image_2_cv
+    return cv2.imread(image_1, 0), cv2.imread(image_2, 0)
 
 def calculate_features(image_1_cv, image_2_cv, feature_number):
     orb = cv2.ORB_create(nfeatures=feature_number)
-    keypoints_1, descriptors_1 = orb.detectAndCompute(image_1_cv, None)
-    keypoints_2, descriptors_2 = orb.detectAndCompute(image_2_cv, None)
-    return keypoints_1, keypoints_2, descriptors_1, descriptors_2
+    return orb.detectAndCompute(image_1_cv, None), orb.detectAndCompute(image_2_cv, None)
 
 def calculate_matches(descriptors_1, descriptors_2):
     brute_force = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-    matches = brute_force.match(descriptors_1, descriptors_2)
-    matches = sorted(matches, key=lambda x: x.distance)
-    return matches
+    return sorted(brute_force.match(descriptors_1, descriptors_2), key=lambda x: x.distance)
 
 def find_matching_coordinates(keypoints_1, keypoints_2, matches):
-    coordinates_1 = []
-    coordinates_2 = []
-    for match in matches:
-        image_1_idx = match.queryIdx
-        image_2_idx = match.trainIdx
-        (x1, y1) = keypoints_1[image_1_idx].pt
-        (x2, y2) = keypoints_2[image_2_idx].pt
-        coordinates_1.append((x1, y1))
-        coordinates_2.append((x2, y2))
-    return coordinates_1, coordinates_2
+    return [(keypoints_1[match.queryIdx].pt, keypoints_2[match.trainIdx].pt) for match in matches]
 
 def calculate_mean_distance(coordinates_1, coordinates_2):
-    all_distances = 0
     merged_coordinates = list(zip(coordinates_1, coordinates_2))
-    for coordinate in merged_coordinates:
-        x_difference = coordinate[0][0] - coordinate[1][0]
-        y_difference = coordinate[0][1] - coordinate[1][1]
-        distance = math.hypot(x_difference, y_difference)
-        all_distances = all_distances + distance
-    return all_distances / len(merged_coordinates)
+    return sum(math.hypot(coordinate[0][0] - coordinate[1][0], coordinate[0][1] - coordinate[1][1]) for coordinate in merged_coordinates) / len(merged_coordinates)
 
 def calculate_speed_in_kmps(feature_distance, GSD, time_difference):
-    distance = feature_distance * GSD / 100000
-    speed = distance / time_difference
-    return speed
+    return (feature_distance * GSD / 100000) / time_difference
 
-# Specify the directory containing the image files
-image_directory = r'/mnt/c/Users/swmar/CMS/Subject/ComputerScience/code/misc_code/CMS_AstroPI/SamStuff/example-stuff/images'
-# print(os.getcwd())
-# Get a list of all image files in the directory
+def display_matches(image_1_cv, keypoints_1, image_2_cv, keypoints_2, matches):
+    match_img = cv2.drawMatches(image_1_cv, keypoints_1, image_2_cv, keypoints_2, matches[:100], None)
+    resize = cv2.resize(match_img, (1600,600), interpolation = cv2.INTER_AREA)
+    cv2.imshow('matches', resize)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+image_directory = 'C:\\Erik\School\\CMS_AstroPI\\Sam\\example-stuff\\images'
 image_files = [f for f in os.listdir(image_directory) if f.endswith('.jpg')]
 
-# Store the speeds for each image
 all_speeds = []
 
-# Loop through consecutive image pairs
 for i in range(len(image_files) - 1):
-    # Form the complete paths for consecutive image pairs
     image_1 = os.path.join(image_directory, image_files[i])
     image_2 = os.path.join(image_directory, image_files[i + 1])
 
-    # Perform the existing analysis for each pair
     time_difference = get_time_difference(image_1, image_2)
     image_1_cv, image_2_cv = convert_to_cv(image_1, image_2)
     keypoints_1, keypoints_2, descriptors_1, descriptors_2 = calculate_features(image_1_cv, image_2_cv, 1000)
@@ -86,14 +64,15 @@ for i in range(len(image_files) - 1):
     coordinates_1, coordinates_2 = find_matching_coordinates(keypoints_1, keypoints_2, matches)
     average_feature_distance = calculate_mean_distance(coordinates_1, coordinates_2)
     speed = calculate_speed_in_kmps(average_feature_distance, 12648, time_difference)
+    print(f"Image Pair {i + 1}: {speed} km/s")
+    display_matches(image_1_cv, keypoints_1, image_2_cv, keypoints_2, matches)
 
     # Append the speed to the list
     all_speeds.append(speed)
 
 # Print all speeds
 n=3
-all_speeds_filter_one = [num for num in all_speeds]
-all_speeds_filtered = all_speeds_filter_one[len(all_speeds)//n:(n-1)*len(all_speeds)//n]
+all_speeds_filtered = all_speeds[len(all_speeds)//n:(n-1)*len(all_speeds)//n]
 print(sum(all_speeds)/len(all_speeds))
 print("Speeds for each image pair:")
 for i, speed in enumerate(all_speeds_filtered, start=1):
