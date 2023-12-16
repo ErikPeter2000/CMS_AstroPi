@@ -1,5 +1,6 @@
 # CMS_AstroPi
-The AstroPi team at the Cambridge Maths School.
+Hello. We are the [AstroPi](https://astro-pi.org/) team at the Cambridge Maths School.  
+Currently, we are working on [Mission Space Lab](https://astro-pi.org/mission-space-lab) with Richard from RaspberryPi to try and determine the speed of the ISS.
 
-## Note
-Please keep this repository tidy. If you want to make a mess, keep that mess in your own folder. Label directories properly. If you are changing something that isn't personally yours, submit a PR.
+## Our Team
+Erik, Timur, Jasper, Yotam, David, Samuel.
