@@ -2,7 +2,7 @@
 import os
 from speed_base import *
 
-image_directory = 'C:\\Erik\School\\CMS_AstroPI\\Images\\satellite'
+image_directory = r"C:\Erik\CMS\CMS_AstroPI\Erik\src\Images\Renders"
 image_files = [f for f in os.listdir(image_directory) if f.endswith('.jpg')]
 
 all_speeds = []
@@ -36,4 +36,4 @@ print(f"Image Pair MEAN: {sum(all_speeds_filtered)/(len(all_speeds_filtered))} k
 print("RUNTIME:",time.time()-start_time)
 
 plt.plot([ele for ele in range(len(all_speeds_filtered))],all_speeds_filtered)
-plt.savefig("fig1.png")
+#plt.savefig("fig1.png")

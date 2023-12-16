@@ -1,6 +1,7 @@
 *.jpg
 *.jpeg
 *.zip
+*.tif
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

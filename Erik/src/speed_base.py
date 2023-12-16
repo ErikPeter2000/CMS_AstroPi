@@ -1,19 +1,18 @@
-from exif import Image
+from PIL import Image
 from datetime import datetime
 import cv2
 import math
 import matplotlib.pyplot as plt
 import time
 import os
+import os
 
 start_time = time.time()
 
-def get_time(image):
-    with open(image, 'rb') as image_file:
-        img = Image(image_file)
-        time_str = img.get("datetime_original")
-        time = datetime.strptime(time_str, '%Y:%m:%d %H:%M:%S')
-    return time
+def get_time(image_path):
+    created_timestamp = os.path.getctime(image_path)
+    created_date = datetime.fromtimestamp(created_timestamp)
+    return created_date
 
 def get_time_difference(image_1, image_2):
     time_1 = get_time(image_1)
@@ -47,6 +46,3 @@ def display_matches(image_1_cv, keypoints_1, image_2_cv, keypoints_2, matches):
     cv2.imshow('matches', resize)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
-image_directory = 'C:\\Erik\School\\CMS_AstroPI\\Sam\\example-stuff\\images'
-image_files = [f for f in os.listdir(image_directory) if f.endswith('.jpg')]
