@@ -36,7 +36,7 @@ def processImagePair(image_1, image_2):
     average_feature_distance = processCoords(coordinates_1, coordinates_2)
     speed = calculate_speed_in_kmps(average_feature_distance, 12648, time_difference)
     print(f"Image Pair {i + 1}: {speed} km/s")
-    #display_matches(image_1_cv, points1, image_2_cv, points2, matches)
+    display_matches(image_1_cv, points1, image_2_cv, points2, matches)
 
     # Append the speed to the list
     all_speeds.append(speed)
