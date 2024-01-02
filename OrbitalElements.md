@@ -2,7 +2,7 @@
 
 ## The 6 Orbital Elements
 
-![](./Images/Orbit1.svg)
+![](./Images/git/Orbit1.svg)
 
 1. Eccentricity: Defines the shape of an ellipse. 0 is perfect circle, 1 is a parabola. Rep: `e`.
 
