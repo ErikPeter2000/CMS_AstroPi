@@ -86,7 +86,7 @@ def matchPoints():
 if __name__ == "__main__":
     points = matchPoints()
 
-    # Write matching points to a text file
+    # Write matching points to a text file (proof of concept!)
     with open("matching_points.txt", "w") as file:
         for i, matching_data in enumerate(points):
             file.write(f"Image Pair {i + 1}:\n")
