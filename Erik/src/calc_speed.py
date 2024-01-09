@@ -4,7 +4,7 @@ from speed_base import *
 import math
 import numpy as np
 
-image_directory = r"C:\Erik\CMS\CMS_AstroPI\Erik\src\Images\Renders"
+image_directory = r"C:\Erik\School\CMS_AstroPI\Images\satellite"
 image_files = [f for f in os.listdir(image_directory) if f.endswith('.jpg')]
 
 all_speeds = []

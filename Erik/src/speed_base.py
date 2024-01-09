@@ -1,3 +1,5 @@
+from vector2 import Vector2
+
 from PIL import Image
 from datetime import datetime
 import cv2
@@ -6,6 +8,18 @@ import matplotlib.pyplot as plt
 import time
 import os
 import os
+
+class MatchPoint(Vector2):
+    @property
+    def worldDistance(self):
+        return self.magnitude * self.GSD
+    
+    def __init__(self, x1, y1, x2, y2, distance):
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2 
+        self.y2 = y2
+        self.distance = distance
 
 start_time = time.time()
 
