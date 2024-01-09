@@ -33,3 +33,7 @@ Collection of notes from meetings with Richard or Other Team (OT).
  - Both groups document functions.
  - OpenCV to compare images.
  - *TODO:* Yotam did not receive email. Speak to Mr Rudin.
+
+## Tue 2023-01-09
+ - Received Raspberry Pi
+ - *TODO:* Set up the Pi. Needs internet access and libraries installed.
