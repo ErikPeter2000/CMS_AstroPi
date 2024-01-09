@@ -63,3 +63,6 @@ if __name__ == "__main__":
     time.sleep(0.1) # Sleep for 100ms
     if thread.is_alive():
         print("Thread should be finished by now...")
+    
+    
+    thread.join() # wait for thread to finish. This is necessary to 'cleanly' exit the program.
