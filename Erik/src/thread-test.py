@@ -2,7 +2,7 @@
 # The main thread will be used to get data from the camera and send it to the worker thread via a queue.
 # The 'Worker' class defines the basic behaviour of a background task. It contains a queue to store data to be processed.
 # The 'Worker' is then inherited by a derived class that, in this example, calculates the mean by dequeuing numbers from the inherited queue.
-# Please note that AstroPi will be picky about using threads. Please don't block execution in the background thread and handle exceptions properly.
+# Please note that AstroPi will be picky about using threads. Please avoid blocking execution in the background thread and handle exceptions properly.
 
 import threading
 from queue import Queue
@@ -29,12 +29,13 @@ class MeanWorker(Worker):
             count = 0 # local variables for number of items in the queue
             while not self.cancelled: # loop until cancelled
                 if not self.queue.empty():
-                    item = self.queue.get(False) # False ensures that we do not wait for an item, which is why why wrap this in an if statement
+                    item = self.queue.get(False) # False ensures that we do not wait for an item, which is why why wrap this in an if statement as we assume the queue is not empty.
                     self.__mean = (self.__mean*count + item)/(count+1) # calculate mean
                     count+=1
         except Exception as e:
             print(e) # we'd want to log this somehow in the actual code
-            self.cancel() # cancel thread if an exception occurs
+        finally:
+            self.cancel() # cancel thread
 
     @property
     def mean(self): # getter for mean. We could just access the variable from outside the class, but this is better practice for thread safety.
