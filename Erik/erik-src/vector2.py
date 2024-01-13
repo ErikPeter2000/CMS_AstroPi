@@ -20,34 +20,34 @@ class vector2:
     @staticmethod 
     @property
     def identity():
-        return Vector2(0, 0)
+        return vector2(0, 0)
     
     def dot(self, other):
-        return self.x * other.X + self.y * other.Y
+        return self.x * other.x + self.y * other.y
     def __add__(self, other):
-        return Vector2(self.x + other.X, self.y + other.Y)
+        return vector2(self.x + other.x, self.y + other.y)
     def __sub__(self, other):
-        return Vector2(self.x - other.X, self.y - other.Y)
+        return vector2(self.x - other.x, self.y - other.y)
     def scale(self, scalar):
-        return Vector2(self.x * scalar, self.y * scalar)    
+        return vector2(self.x * scalar, self.y * scalar)    
     def translate(self, x, y):
-        return Vector2(self.x + x, self.y + y)
+        return vector2(self.x + x, self.y + y)
     def translateSelf(self, x, y):
         self.x += x
         self.y += y
     def addSelf(self, other):
-        self.x += other.X
-        self.y += other.Y
+        self.x += other.x
+        self.y += other.y
     def subSelf(self, other):
-        self.x -= other.X
-        self.y -= other.Y
+        self.x -= other.x
+        self.y -= other.y
     def scaleSelf(self, scalar):
         self.x *= scalar
         self.y *= scalar
     def distance(self, other):
-        return math.sqrt((self.x - other.X)**2 + (self.y - other.Y)**2)
+        return math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
     def distanceSquared(self, other):
-        return (self.x - other.X)**2 + (self.y - other.Y)**2
+        return (self.x - other.x)**2 + (self.y - other.y)**2
     def __str__(self):
         return "vector2({0}, {1})".format(self.x, self.y)
     
