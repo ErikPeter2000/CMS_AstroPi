@@ -1,8 +1,7 @@
-# A class that represents a worker thread that can be cancelled
-
 from queue import Queue
 
 class Worker:
+    """Represents a worker that can be cancelled and has a value"""
     def __init__(self):
         self.cancelled = False
         self.queue = Queue()
