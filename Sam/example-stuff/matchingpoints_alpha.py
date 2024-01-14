@@ -5,23 +5,28 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import time
 import os
+from picamera import PiCamera
+
+
+
+
 
 def matchPoints():
     start_time = time.time()
     base_folder = Path(__file__).parent.resolve()
     image_dir = base_folder / "images"
-    # cam = PiCamera()
-    # no_photos = 2
-    # timeslice = 1000 # put this in seconds
-    # time_inc = ((0.9*timeslice*1000) // no_photos)
-    # cam.start_preview()
+    cam = PiCamera()
+    no_photos = 2
+    timeslice = 1000 # put this in seconds
+    time_inc = ((0.9*timeslice*1000) // no_photos)
+    cam.start_preview()
 
-    # for i in range(no_photos):
-    #     time.sleep(time_inc)
-    #     cam.capture((image_dir / f'image_{i}.jpg'))
+    for i in range(no_photos):
+        time.sleep(time_inc)
+        cam.capture((image_dir / f'image_{i}.jpg'))
 
-    # cam.stop_preview()
-    # cam.close()
+    cam.stop_preview()
+    cam.close()
     def get_time(image):
         with open(image, 'rb') as image_file:
             img = Image(image_file)
