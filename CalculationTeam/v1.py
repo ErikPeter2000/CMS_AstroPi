@@ -1,5 +1,5 @@
 #This is version 1 of the code, intended as a draft
-
+#Hello there
 # -- Constants
 mpt = 20 #metres per thingy
 maxCount = 10 #Number of matches to be combined into one average for later calculations
