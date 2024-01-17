@@ -1,4 +1,4 @@
-from worker import Worker # to be replaced with a reference to teh calculation Team's worker
+from speedWorker import speedWorker as Worker # to be replaced with a reference to teh calculation Team's worker
 from dummyCameraWrapper import CameraWrapper # replace with actual camera wrapper
 from cv2Matcher import MatchData, calculateMatches
 from sensorDumpWrapper import SensorDumpWrapper
@@ -22,7 +22,7 @@ def writeSpeed(speed):
 
 if __name__ == "__main__":
     logfile(str(DATA_FOLDER / "events.log"))
-
+    logger.info(f"Directory: {DATA_FOLDER}")
     startTime = datetime.now()
 
     logger.info(f"Starting program")
@@ -55,7 +55,9 @@ if __name__ == "__main__":
             
         os.remove(imageQueue.get(False)) # delete the last image
 
-        writeSpeed(speedWorker.value)
+        speed = speedWorker.value
+        logger.info(f"Speed: {speed}")
+        writeSpeed(speed)
     except Exception as e:
         logger.exception(e)
     finally:

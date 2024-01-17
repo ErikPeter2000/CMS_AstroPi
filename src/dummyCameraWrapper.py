@@ -9,7 +9,7 @@ class CameraWrapper:
     index = 0
     imageArray = []
     def __init__(self):
-        for filename in os.listdir(IMAGE_PATH):
+        for filename in os.listdir(IMAGE_PATH.resolve()):
             if filename.endswith(".jpg") or filename.endswith(".png"):
                 self.imageArray.append(os.path.join(IMAGE_PATH.resolve(), filename))
 

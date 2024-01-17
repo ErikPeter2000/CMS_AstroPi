@@ -13,7 +13,7 @@ def calculate(match_data):
 class speedWorker(Worker):
     def __init__(self):
         super().__init__()
-        self.__value = 0
+        self._Worker__value = 0
 
     def work(self):
         try:
@@ -25,7 +25,7 @@ class speedWorker(Worker):
 
                     speed = calculate(item)
 
-                    self.__value = (self.__value * pointer + speed) / (pointer + 1)
+                    self._Worker__value = speed
 
                     pointer += 1
         except Exception as e:
