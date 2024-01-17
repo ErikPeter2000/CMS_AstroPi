@@ -15,8 +15,8 @@ class MatchData:
             index2 = match.trainIdx
             (x1,y1) = keypoints1[index1].pt
             (x2,y2) = keypoints2[index2].pt
-            self.coordinates_1.append((x1,y1))
-            self.coordinates_2.append((x2,y2))
+            self.coordinates_1.append([x1,y1])
+            self.coordinates_2.append([x2,y2])
         self.timeDifference = timeDifference
     def __len__(self):
         return len(self.coordinates_1)
