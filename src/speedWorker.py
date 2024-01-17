@@ -12,7 +12,7 @@ def calculate(match_data):
 #__________________________________!!!!!!!!!!!!!!!!!!!__________________________
 class speedWorker(Worker):
     def __init__(self):
-        super().__init__(self)
+        super().__init__()
         self.__value = 0
 
     def work(self):
