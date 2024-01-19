@@ -1,6 +1,7 @@
 import math
 
 from worker import Worker
+from logzero import logger
 
 
 
@@ -28,20 +29,16 @@ class speedWorker(Worker):
         self._Worker__value = 0
 
     def work(self):
-        try:
-            pointer = 0  # local variables for number of items in the queue
-            while not self.cancelled:  # loop until cancelled
+        count = 0  # local variables for number of items in the queue
+        while not self.cancelled:  # loop until cancelled
+            try:
                 if not self.queue.empty():
-                    item = self.queue.get(
-                        False)  # False ensures that we do not wait for an item, which is why wrap this in an if statement as we assume the queue is not empty.
-
-                    speed = calculate(item)
-
-                    self._Worker__value = speed
-
-                    pointer += 1
-        except Exception as e:
-            print("\n______________________________\n"+str(e)+"\n______________________________\n")  # we'd want to log this somehow in the actual code
-        finally:
-            self.cancel()
+                    item = self.queue.get(False)
+                    count+=1
+                    speed = self._Worker__value
+                    speed = (speed*count + calculate(item))/(count+1)
+                    self._Worker__value = speed    
+            except Exception as e:
+                logger.error(e)
+        self.cancel()
 
