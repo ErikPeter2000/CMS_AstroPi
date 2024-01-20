@@ -4,6 +4,9 @@
 *.zip
 *.tif
 
+# include example images
+!Images/Example/photo_019*
+
 # src
 src/dump/*
 src/speed.txt
@@ -82,7 +85,7 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
+/# Sphinx documentation
 docs/_build/
 
 # PyBuilder
