@@ -14,3 +14,8 @@ class Worker:
     @property
     def value(self):
         return self.__value
+    
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.cancel()

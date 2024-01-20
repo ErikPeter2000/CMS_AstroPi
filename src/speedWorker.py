@@ -4,7 +4,7 @@ from worker import Worker
 from logzero import logger
 from cv2Matcher import ImagePair, calculateMatches
 
-class speedWorker(Worker):
+class SpeedWorker(Worker):
     def __init__(self, gsd):
         super().__init__()
         self.gsd = gsd
