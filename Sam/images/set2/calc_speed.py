@@ -18,28 +18,44 @@ def get_time_difference(image_1, image_2):
     time_difference = time_2 - time_1
     return time_difference.seconds
 
+def apply_contrast(image, alpha=1.5, beta=0):
+    # Apply contrast to the image
+    adjusted_image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
+    return adjusted_image
+
 def convert_to_cv(image_1, image_2):
-    image_1_cv = cv2.imread(image_1, 0)
-    image_2_cv = cv2.imread(image_2, 0)
+    image_1_cv = cv2.imread(str(image_1))
+    image_2_cv = cv2.imread(str(image_2))
+
+    # Ensure the images are not None
+    if image_1_cv is None or image_2_cv is None:
+        raise ValueError("Failed to read one or both images.")
+
+    # Extract height, width, and number of channels
+    h, w, _ = image_1_cv.shape
 
     # Crop the central part of the images
     central_fraction = 0.6  # Adjust the fraction as needed
-    h, w = image_1_cv.shape
     central_h, central_w = int(h * central_fraction), int(w * central_fraction)
     start_h, start_w = (h - central_h) // 2, (w - central_w) // 2
 
     image_1_cv = image_1_cv[start_h:start_h + central_h, start_w:start_w + central_w]
     image_2_cv = image_2_cv[start_h:start_h + central_h, start_w:start_w + central_w]
 
+    # Apply contrast to the images
+    contrast_alpha = 0.5  # Adjust as needed
+    image_1_cv = apply_contrast(image_1_cv, alpha=contrast_alpha)
+    image_2_cv = apply_contrast(image_2_cv, alpha=contrast_alpha)
+
     # Apply blur to the images
-    blur_size = (7, 7)  # Adjust the kernel size as needed
+    blur_size = (15, 15)  # Adjust the kernel size as needed
     image_1_blurred = cv2.GaussianBlur(image_1_cv, blur_size, 0)
     image_2_blurred = cv2.GaussianBlur(image_2_cv, blur_size, 0)
 
     # Save the first blurred image as "BLURBLURBLAH.jpg"
     cv2.imwrite("CCBLURBLURBLAH.jpg", image_1_blurred)
 
-    return image_1_cv, image_2_cv
+    return image_1_blurred, image_2_blurred
 
 def calculate_features(image_1_cv, image_2_cv, feature_number):
     orb = cv2.ORB_create(nfeatures=feature_number)
@@ -116,7 +132,7 @@ filtered_speeds = [spd for spd in all_speeds if abs(spd - mean_speed) < filter_m
 
 # Calculate the average speed
 average_speed = np.mean(filtered_speeds)
-
+print(mean_speed,average_speed)
 # print(f"Average Speed for all pairs (excluding anomalies): {average_speed/(0.6**2)} km/s")
 val1 = (mean_speed/((0.6/1.1)**2))
 val2 = (average_speed/((0.6/1.17)**2))
