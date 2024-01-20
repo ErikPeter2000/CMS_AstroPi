@@ -5,7 +5,7 @@
 *.tif
 
 # include example images
-!Images/Example/photo_019*
+!Images/Satellite/photo_019*
 
 # src
 src/dump/*
