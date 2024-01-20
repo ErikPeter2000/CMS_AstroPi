@@ -1,6 +1,6 @@
 """Manages dumping sensor data to a csv."""
 
-# from sense_hat import SenseHat
+from sense_hat import SenseHat
 from datetime import datetime
 import os
 import shutil
@@ -17,9 +17,11 @@ class SensorDumpWrapper:
         self.file = open(self.csvPath, "w")
         # set an index to the number of images in the dump folder
         self.imageIndex = len(os.listdir(self.dumpFolder))
+
     def record(self):
         """Records sensor data to the csv file."""
         self.file.write(str(datetime.now()) + "\n")
+
     def copyImage(self, path):
         """Copies an image to the dump folder. The image is renamed to the current time."""
         if (not os.path.exists(path)):
@@ -27,6 +29,7 @@ class SensorDumpWrapper:
         imageName = datetime.now().strftime("image_%Y-%m-%d%_H%:M%:S:%f") + ".jpg"
         imagePath = os.path.join(self.dumpFolder, imageName)
         shutil.copy(path, imagePath)
+
     def close(self):
         self.file.close()
         

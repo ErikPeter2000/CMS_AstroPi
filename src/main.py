@@ -1,5 +1,5 @@
-from speedWorker import SpeedWorker as Worker # to be replaced with a reference to teh calculation Team's worker
-from dummyCameraWrapper import CameraWrapper # replace with actual camera wrapper
+from speedWorker import SpeedWorker as Worker
+from dummyCameraWrapper import CameraWrapper # replace with actual camera wrapper in release
 from cv2Matcher import ImagePair, imageToCv2, timeDifference
 from sensorDumpWrapper import SensorDumpWrapper
 import threading
@@ -31,7 +31,7 @@ def main():
                 try:
                     with CameraWrapper() as camera:
                         logger.info("Initialised Camera")
-                        imageQueue = Queue() # store the last two images needed to compute matches
+                        imageQueue = Queue() # stores the last two images needed to compute matches
                         speedThread.start() # start the worker thread
                         imageIndex = 0
                         logger.info("Started thread, capturing images")
@@ -68,7 +68,7 @@ def main():
             #endwith speedWorker
         except Exception as e:
             logger.error(f"Critical Error Occurred. Attempting to only capture sensor data. \n{e}")
-            # in the event of an error, just try and capture sensor data instead
+            # in the event of an error, just try and capture some sensor data without bothering to calculate speed
             while (datetime.now() - startTime).total_seconds() < MAX_CALC_TIME:
                 sensorDumper.record()
                 time.sleep(INTERVAL)

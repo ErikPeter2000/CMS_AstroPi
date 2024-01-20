@@ -7,8 +7,10 @@ class Worker:
         self.queue = Queue()
         self.__value = 0
     def work(self):
+        """While not cancelled, do work"""
         pass
     def cancel(self):
+        """Cancels the worker. The `work()` method must check `cancelled` to see if it should stop working."""
         self.cancelled = True
 
     @property
