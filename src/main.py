@@ -1,5 +1,5 @@
 from speedWorker import SpeedWorker as Worker
-from dummyCameraWrapper import CameraWrapper # replace with actual camera wrapper in release
+from cameraWrapper import CameraWrapper
 from cv2Matcher import ImagePair, imageToCv2, timeDifference
 from sensorDumpWrapper import SensorDumpWrapper
 import threading
