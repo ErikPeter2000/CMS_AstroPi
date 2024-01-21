@@ -1,7 +1,7 @@
 # CMS_AstroPi
 This is our python code for [AstroPi](https://astro-pi.org/) 2024, written by students at the [Cambridge Maths School](https://cms.tela.org.uk/).  
 We are working on [Mission Space Lab](https://astro-pi.org/mission-space-lab) with Richard from RaspberryPi to try and determine the speed of the ISS, whilst also gathering useful data to analyse after the mission.  
-Developed using [Python 3.11.5](https://www.python.org/).
+Developed in [Python 3.11.5](https://www.python.org/).
 
 ## Hardware
  - [Raspberry Pi 4](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
