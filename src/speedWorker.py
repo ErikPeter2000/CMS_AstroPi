@@ -2,7 +2,7 @@ import math
 
 from worker import Worker
 from logzero import logger
-from cv2Matcher import ImagePair, calculateMatches
+from cv2Matcher import calculateMatches
 
 class SpeedWorker(Worker):
     """Worker that calculates the speed from a queue of `ImagePairs`"""

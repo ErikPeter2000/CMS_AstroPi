@@ -3,7 +3,6 @@
 from exif import Image
 from datetime import datetime
 import cv2
-import numpy as np
 
 class ImagePair:
     """Stores a pair of two images for matching."""
