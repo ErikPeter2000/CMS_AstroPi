@@ -4,6 +4,7 @@ from sense_hat import SenseHat
 from datetime import datetime
 import os
 import shutil
+from logzero import logger
 from datetime import datetime
 
 class SensorDumpWrapper:
@@ -28,6 +29,7 @@ class SensorDumpWrapper:
         gyroscope = SenseHat().get_gyroscope_raw()
         accelerometer = SenseHat().get_accelerometer_raw()
         data = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%s:%f')}{orientation['yaw']},{orientation['pitch']},{orientation['roll']},{compassNorth},{magnetometer['x']},{magnetometer['y']},{magnetometer['z']},{gyroscope['x']},{gyroscope['y']},{gyroscope['z']},{accelerometer['x']},{accelerometer['y']},{accelerometer['z']}"
+        logger.info(f"Sensor Data: {data}")
         self.file.write(data + "\n")
 
     def copyImage(self, path):
@@ -39,6 +41,7 @@ class SensorDumpWrapper:
         shutil.copy(path, imagePath)
 
     def close(self):
+        self.file.flush()
         self.file.close()
         
     def __enter__(self):
