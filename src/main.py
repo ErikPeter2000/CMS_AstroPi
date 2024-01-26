@@ -64,7 +64,8 @@ def main():
                     
                 finally:
                     speedWorker.cancel()
-                    speedThread.join() # ensure that the thread is closed
+                    if speedThread.is_alive():
+                        speedThread.join() # ensure that the thread is closed
             #endwith speedWorker
         except Exception as e:
             logger.error(f"Critical Error Occurred. Attempting to only capture sensor data. \n{e}")
