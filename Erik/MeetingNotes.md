@@ -12,7 +12,7 @@ Collection of notes from meetings with Richard or Other Team (OT).
  - *TODO:* Ask Mr Gordon to unblock Flickr or use VPNs.
  - *TODO:* Decide what to log for post-experiment analysis.
 
-## Tue 2023-01-02
+## Tue 2024-01-02
  - We work towards an MVP.
  - 2 parts: Handle I/O. Perform calculations.
  - Need to research what is needed. Set deadlines.
@@ -32,8 +32,13 @@ Collection of notes from meetings with Richard or Other Team (OT).
    - 19th January - Taking the images.
  - Both groups document functions.
  - OpenCV to compare images.
- - *TODO:* Yotam did not receive email. Speak to Mr Rudin.
+ - *TODO:* Yotam did not receive email. Speak to teacher.
 
-## Tue 2023-01-09
+## Tue 2024-01-09
  - Received Raspberry Pi
  - *TODO:* Set up the Pi. Needs internet access and libraries installed.
+
+## Fri 2024-01-26
+ - Discussed next steps now that the program is functional.
+ - Need to refine the algorithm for calculating speed.
+   - Sam and Erik may need to support the Data Team, since the algorithm developed was minimal.
