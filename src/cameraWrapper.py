@@ -9,7 +9,7 @@ class CameraWrapper:
         self.camera.resolution = RESOLUTION
 
     def capture(self, path):
-        self.camera.capture(path)
+        self.camera.capture(str(path))
 
     def close(self):
         self.camera.close()
