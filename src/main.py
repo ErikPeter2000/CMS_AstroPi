@@ -12,8 +12,8 @@ from queue import Queue
 
 ROOT_FOLDER = (Path(__file__).parent).resolve()
 DATA_FOLDER = ROOT_FOLDER
-MAX_CALC_TIME = 570 # seconds, 9.5 minutes
-INTERVAL = 10 # seconds
+MAX_CALC_TIME = 10
+INTERVAL = 1 # seconds
 GSD = 0.1243 # km/pixel. For 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. 0.1036 km/pixel for 6mm lens.
 
 def writeSpeed(speed):
