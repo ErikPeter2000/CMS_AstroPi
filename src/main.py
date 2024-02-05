@@ -1,7 +1,7 @@
-# from dummy.dummyCameraWrapper import CameraWrapper
-# from dummy.dummySensorDumpWrapper import SensorDumpWrapper
-from sensorDumpWrapper import SensorDumpWrapper
-from cameraWrapper import CameraWrapper
+from dummy.dummyCameraWrapper import CameraWrapper
+from dummy.dummySensorDumpWrapper import SensorDumpWrapper
+# from sensorDumpWrapper import SensorDumpWrapper
+# from cameraWrapper import CameraWrapper
 
 from speedWorker import SpeedWorker as Worker
 from cv2Matcher import ImagePair, imageToCv2, timeDifference
@@ -15,9 +15,9 @@ from queue import Queue
 
 ROOT_FOLDER = (Path(__file__).parent).resolve()
 DATA_FOLDER = ROOT_FOLDER
-MAX_CALC_TIME = 5.7 # seconds
-INTERVAL = 0.1 # seconds
-GSD = 0.1243 # km/pixel. For 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. 0.1036 km/pixel for 6mm lens.
+MAX_CALC_TIME = 580 # seconds
+INTERVAL = 10 # seconds
+GSD = 0.1243 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
 IMAGE_INTERVAL = 3 # Save every nth image
 
 imageCaptureCounter = 0
@@ -30,9 +30,7 @@ def writeSpeed(speed):
 def processImageToSave(imagePath, sensorDump):
     """Copies the image to the data folder and renames if the counter % IMAGE_INTERVAL == 0."""
     global imageCaptureCounter
-    if (not os.path.exists(imagePath)):
-        return
-    if imageCaptureCounter % IMAGE_INTERVAL == 0 and sensorDump.spaceRemaining:
+    if imageCaptureCounter % IMAGE_INTERVAL == 0:
         sensorDump.copyImage(imagePath)
     imageCaptureCounter +=1
 
@@ -50,7 +48,6 @@ def main():
                         speedThread.start() # start the worker thread
                         imageIndex = 0
                         logger.info("Started thread, capturing images...")
-
                         while (datetime.now() - startTime).total_seconds() < MAX_CALC_TIME: # run for MAX_CALC_TIME seconds
                             currentImagePath = DATA_FOLDER / Path(f"./image{imageIndex}.jpg") # the path to store the captured image
                             camera.capture(currentImagePath)
@@ -84,7 +81,7 @@ def main():
                         speedThread.join() # ensure that the thread is closed
             #endwith speedWorker
         except Exception as e:
-            logger.error(f"Critical Error Occurred. Attempting to only capture sensor data. \n{e}")
+            logger.error(f"Error Occurred in main loop. Attempting to only capture sensor data. \n{e}")
             # in the event of an error, just try and capture some sensor data without bothering to calculate speed
             while (datetime.now() - startTime).total_seconds() < MAX_CALC_TIME:
                 sensorDumper.record()

@@ -37,14 +37,19 @@ class SensorDumpWrapper:
 
     def copyImage(self, path):
         """Copies an image to the dump folder. The image is renamed to the current time."""
+        imageSize = os.path.getsize(path)
         if (not os.path.exists(path)):
             logger.error(f"Image {path} does not exist. Could not copy to data folder.")
             return
-        imageName = datetime.now().strftime("image_%Y-%m-%d%_H%:M%:S:%f") + ".jpg"
-        imagePath = os.path.join(self.dumpFolder, imageName)
-        shutil.copy(path, imagePath)
-        self.imageIndex += 1
-        logger.info(f"Image {path} saved to {imagePath}")
+        elif (not self.spaceRemaining(imageSize)):
+            logger.error(f"Insufficient space remaining to store image {path}.")
+            return
+        else:
+            imageName = datetime.now().strftime("image_%Y-%m-%d%_H%:M%:S:%f") + ".jpg"
+            imagePath = os.path.join(self.dumpFolder, imageName)
+            shutil.copy(path, imagePath)
+            self.imageIndex += 1
+            logger.info(f"Image {path} saved to {imagePath}, {self.imageIndex} images in data folder.")
 
     @property
     def dataSize(self):
@@ -55,11 +60,10 @@ class SensorDumpWrapper:
     def remainingCapacity(self):
         "returns the remaining capacity of the data folder in bytes"
         return DATA_CAPACITY_BYTES - self.dataSize()
-
-    @property
-    def spaceRemaining(self):
-        "returns True if there is enough space remaining to store an image"
-        return self.remainingCapacity() > self.approxImageSize
+    
+    def spaceRemaining(self, size):
+        "returns True if there is enough space remaining to store a file of size 'size'"
+        return self.remainingCapacity() > size
 
     def close(self):
         self.file.flush()
