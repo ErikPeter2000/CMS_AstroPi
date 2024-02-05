@@ -28,7 +28,7 @@ class SpeedWorker(Worker):
             y2 = coords2[i][1]
             d = math.sqrt((x2-x1)**2 + (y2-y1)**2)
             aveDistance += d/len(coords1)
-            g = (y2-y1)/(x2-x1)
+            g = math.atan2((y2-y1),(x2-x1))
             gradients.append(g)
             speeds.append(d)
             aveGradient += g/len(coords1)

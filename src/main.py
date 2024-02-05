@@ -1,7 +1,7 @@
-# from dummy.dummyCameraWrapper import CameraWrapper
-# from dummy.dummySensorDumpWrapper import SensorDumpWrapper
-from sensorDumpWrapper import SensorDumpWrapper
-from cameraWrapper import CameraWrapper
+from dummy.dummyCameraWrapper import CameraWrapper
+from dummy.dummySensorDumpWrapper import SensorDumpWrapper
+#from sensorDumpWrapper import SensorDumpWrapper
+#from cameraWrapper import CameraWrapper
 
 from speedWorker import SpeedWorker as Worker
 from cv2Matcher import ImagePair, imageToCv2, timeDifference
@@ -15,8 +15,8 @@ from queue import Queue
 
 ROOT_FOLDER = (Path(__file__).parent).resolve()
 DATA_FOLDER = ROOT_FOLDER
-MAX_CALC_TIME = 580 # seconds
-INTERVAL = 10 # seconds
+MAX_CALC_TIME = 5.80 # seconds
+INTERVAL = 0.10 # seconds
 GSD = 0.1243 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
 IMAGE_INTERVAL = 3 # Save every nth image
 
