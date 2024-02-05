@@ -15,17 +15,22 @@ from queue import Queue
 
 ROOT_FOLDER = (Path(__file__).parent).resolve()
 DATA_FOLDER = ROOT_FOLDER
-MAX_CALC_TIME = 58.0 # seconds
-INTERVAL = 01.0 # seconds
+MAX_CALC_TIME = 5.80 # seconds
+INTERVAL = 0.10 # seconds
 GSD = 0.1243 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
 IMAGE_INTERVAL = 3 # Save every nth image
 
 imageCaptureCounter = 0
 
-def writeSpeed(speed):
+def writeSpeed(value):
     """Writes the speed to speed.txt."""
     with open(str(DATA_FOLDER / "speed.txt"), "w") as file:
-        file.write(str(speed))
+        file.write(str(value)+"km/s")
+    return value
+
+def roundSpeed(value):
+    """Rounds the speed to 5 significant figures, and returns a string."""
+    return f'{float(f"{value:.5g}"):g}'
 
 def processImageToSave(imagePath, sensorDump):
     """Copies the image to the data folder and renames if the counter % IMAGE_INTERVAL == 0."""
@@ -35,6 +40,7 @@ def processImageToSave(imagePath, sensorDump):
     imageCaptureCounter +=1
 
 def main():
+    """Main algorithm. Loop to capture images and calculate speed from matches. Also records sensor data to a csv file"""
     with SensorDumpWrapper(DATA_FOLDER) as sensorDumper:
         logger.info("Initialised Sensor Dumper")
         try:
@@ -72,8 +78,9 @@ def main():
                         logger.info("Finished Capturing Images")                            
                         os.remove(imageQueue.get(False)) # delete the last image
                         speed = speedWorker.value
-                        logger.info(f"Calculated Speed: {speed}")
-                        writeSpeed(speed)                    
+                        rounded = roundSpeed(speed)
+                        logger.info(f"Calculated Speed: {speed} ({rounded}) km/s. Writing to file...")
+                        result = writeSpeed(rounded)
                     
                 finally:
                     speedWorker.cancel()
@@ -89,8 +96,12 @@ def main():
 
 if __name__ == "__main__":
     startTime = datetime.now()
-    logger.info(f"Started program {startTime.strftime('%Y-%m-%d %H:%M:%S')}")
     logfile(str(DATA_FOLDER / "events.log"))
+
+    # TODO: remember to replace the dummy classes with the actual classes
+    logger.warn("Unfinished! Using dummy classes. Please replace with actual classes.")
+
+    logger.info(f"Started program {startTime.strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"Directory: {DATA_FOLDER}")
     try:
         main()
