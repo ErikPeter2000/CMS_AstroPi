@@ -7,6 +7,9 @@ import shutil
 from logzero import logger
 from datetime import datetime
 
+DATA_CAPACITY_BYTES = 250000000 # 250MB
+APPROXIMATE_IMAGE_SIZE_BYTES = 5000000 # 5MB
+
 class SensorDumpWrapper:
     """Manages dumping sensor data to a csv and saving images."""
     def __init__(self, directory):
@@ -43,10 +46,25 @@ class SensorDumpWrapper:
         self.imageIndex += 1
         logger.info(f"Image {path} saved to {imagePath}")
 
+    @property
+    def dataSize(self):
+        "returns the size of the data folder in bytes"
+        return sum(os.path.getsize(f) for f in os.listdir(self.dumpFolder) if os.path.isfile(f))
+    
+    @property
+    def remainingCapacity(self):
+        "returns the remaining capacity of the data folder in bytes"
+        return DATA_CAPACITY_BYTES - self.dataSize()
+
+    @property
+    def spaceRemaining(self):
+        "returns True if there is enough space remaining to store an image"
+        return self.remainingCapacity() > self.approxImageSize
+
     def close(self):
         self.file.flush()
-        self.file.close()
-        
+        self.file.close()    
+
     def __enter__(self):
         return self
     def __exit__(self, exc_type, exc_value, traceback):

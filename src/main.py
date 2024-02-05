@@ -26,13 +26,12 @@ def writeSpeed(speed):
 
 def processImageToSave(imagePath, sensorDump):
     """Copies the image to the data folder and renames if the counter % IMAGE_INTERVAL == 0."""
+    global imageCaptureCounter
     if (not os.path.exists(imagePath)):
         return
-    global imageCaptureCounter
-    if imageCaptureCounter % IMAGE_INTERVAL == 0:
+    if imageCaptureCounter % IMAGE_INTERVAL == 0 and sensorDump.spaceRemaining:
         sensorDump.copyImage(imagePath)
-    else:
-        imageCaptureCounter +=1
+    imageCaptureCounter +=1
 
 def main():
     with SensorDumpWrapper(DATA_FOLDER) as sensorDumper:
