@@ -20,6 +20,7 @@ Developed in [Python 3.11.5](https://www.python.org/).
  - [Mission Space Lab Rulebook](https://astro-pi.org/mission-space-lab/rulebook)
  - [Logging Guide](https://projects.raspberrypi.org/en/projects/mission-space-lab-creator-guide/3)
  - [Disallowed Libraries](https://docs.google.com/spreadsheets/d/1EoVzgA8gOiDXsJ1k9dQBdPyFC8U3bXFca2dRmdKNbcI/edit#gid=0)
+ - [Sense Hat API](https://pythonhosted.org/sense-hat/api/)
 
 ## Our Team
 Official Team Name: **Pie-Guys**.  
