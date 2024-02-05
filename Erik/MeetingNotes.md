@@ -42,3 +42,4 @@ Collection of notes from meetings with Richard or Other Team (OT).
  - Discussed next steps now that the program is functional.
  - Need to refine the algorithm for calculating speed.
    - Sam and Erik may need to support the Data Team, since the algorithm developed was minimal.
+ - OT stated that they are aware of the deadline and their project is progressing on time.

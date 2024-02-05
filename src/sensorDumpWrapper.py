@@ -35,10 +35,13 @@ class SensorDumpWrapper:
     def copyImage(self, path):
         """Copies an image to the dump folder. The image is renamed to the current time."""
         if (not os.path.exists(path)):
+            logger.error(f"Image {path} does not exist. Could not copy to data folder.")
             return
         imageName = datetime.now().strftime("image_%Y-%m-%d%_H%:M%:S:%f") + ".jpg"
         imagePath = os.path.join(self.dumpFolder, imageName)
         shutil.copy(path, imagePath)
+        self.imageIndex += 1
+        logger.info(f"Image {path} saved to {imagePath}")
 
     def close(self):
         self.file.flush()

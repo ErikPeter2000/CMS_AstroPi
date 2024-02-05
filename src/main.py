@@ -15,11 +15,24 @@ DATA_FOLDER = ROOT_FOLDER
 MAX_CALC_TIME = 570 # seconds
 INTERVAL = 10 # seconds
 GSD = 0.1243 # km/pixel. For 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. 0.1036 km/pixel for 6mm lens.
+IMAGE_INTERVAL = 3 # Save every nth image
+
+imageCaptureCounter = 0
 
 def writeSpeed(speed):
     """Writes the speed to speed.txt."""
     with open(str(DATA_FOLDER / "speed.txt"), "w") as file:
         file.write(str(speed))
+
+def processImageToSave(imagePath, sensorDump):
+    """Copies the image to the data folder and renames if the counter % IMAGE_INTERVAL == 0."""
+    if (not os.path.exists(imagePath)):
+        return
+    global imageCaptureCounter
+    if imageCaptureCounter % IMAGE_INTERVAL == 0:
+        sensorDump.copyImage(imagePath)
+    else:
+        imageCaptureCounter +=1
 
 def main():
     with SensorDumpWrapper(DATA_FOLDER) as sensorDumper:
@@ -34,11 +47,12 @@ def main():
                         imageQueue = Queue() # stores the last two images needed to compute matches
                         speedThread.start() # start the worker thread
                         imageIndex = 0
-                        logger.info("Started thread, capturing images")
+                        logger.info("Started thread, capturing images...")
 
                         while (datetime.now() - startTime).total_seconds() < MAX_CALC_TIME: # run for MAX_CALC_TIME seconds
                             currentImagePath = DATA_FOLDER / Path(f"./image{imageIndex}.jpg") # the path to store the captured image
                             camera.capture(currentImagePath)
+                            processImageToSave(currentImagePath, sensorDumper)
                             imageQueue.put(currentImagePath) # enqueue the image for future match calculation
                             
                             if (imageQueue.qsize() == 2): # if there are two images to match...
