@@ -2,7 +2,7 @@
 
 ## The 6 Orbital Elements
 
-![](./Images/git/Orbit1.svg)
+![Image displaying the 6 orbital elements.](./Images/Diagrams/Orbit1.svg)
 
 1. Eccentricity: Defines the shape of an ellipse. 0 is perfect circle, 1 is a parabola. Rep: `e`.
 
@@ -49,9 +49,7 @@ His three Laws for describing a body in orbit around a more massive body (in his
 
 3. The square of a secondary body's orbital period is proportional to the cube of the length of the semi-major axis of its orbit.
 
-## Links
+## Further Reading
 [Up-to-date ISS data (all 6 minus True Anomaly).](https://www.heavens-above.com/orbit.aspx?satid=25544)  
-
-[Past ISS data.](https://in-the-sky.org/spacecraft_elements.php?id=25544)
-
+[Past ISS data.](https://in-the-sky.org/spacecraft_elements.php?id=25544)  
 [Good page on Orbital Elements.](https://www.astronomicalreturns.com/p/section-43-six-orbital-elements.html)

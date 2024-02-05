@@ -3,7 +3,13 @@
 from exif import Image
 from datetime import datetime
 import cv2
-import numpy as np
+
+class ImagePair:
+    """Stores a pair of two images for matching."""
+    def __init__(self, cv2image1, cv2image2, timeDifference):
+        self.image1 = cv2image1
+        self.image2 = cv2image2
+        self.timeDifference = timeDifference
 
 class MatchData:
     """Stores the data needed to calculate the speed."""
@@ -39,14 +45,18 @@ def imageToCv2(imagePath):
     image = cv2.imread(str(imagePath), 0)
     return image
 
+def pathToCv2(imagePath):
+    """Converts an image to a cv2 image given its path."""
+    image = cv2.imread(str(imagePath), 0)
+    return image
 
-def calculateMatches(imagePath1, imagePath2):
-    """Calculates the matches pixel coordinates for two images given their paths. Returns MatchData."""
-    image1 = imageToCv2(imagePath1)
-    image2 = imageToCv2(imagePath2)
+def calculateMatches(imagePair):
+    """Calculates the matches pixel coordinates for a pair of two images. Returns MatchData."""
+    image1 = imagePair.image1
+    image2 = imagePair.image2
     orb = cv2.ORB_create()
     kp1, desc1 = orb.detectAndCompute(image1, None)
     kp2, desc2 = orb.detectAndCompute(image2, None)
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
     matches = bf.match(desc1,desc2)
-    return MatchData(matches, timeDifference(imagePath1, imagePath2), kp1, kp2)
+    return MatchData(matches, imagePair.timeDifference, kp1, kp2)
