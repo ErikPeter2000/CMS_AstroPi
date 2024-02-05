@@ -1,7 +1,10 @@
-from speedWorker import SpeedWorker as Worker
-from cameraWrapper import CameraWrapper
-from cv2Matcher import ImagePair, imageToCv2, timeDifference
+# from dummy.dummyCameraWrapper import CameraWrapper
+# from dummy.dummySensorDumpWrapper import SensorDumpWrapper
 from sensorDumpWrapper import SensorDumpWrapper
+from cameraWrapper import CameraWrapper
+
+from speedWorker import SpeedWorker as Worker
+from cv2Matcher import ImagePair, imageToCv2, timeDifference
 import threading
 from datetime import datetime
 from pathlib import Path
@@ -12,8 +15,8 @@ from queue import Queue
 
 ROOT_FOLDER = (Path(__file__).parent).resolve()
 DATA_FOLDER = ROOT_FOLDER
-MAX_CALC_TIME = 570 # seconds
-INTERVAL = 10 # seconds
+MAX_CALC_TIME = 5.7 # seconds
+INTERVAL = 0.1 # seconds
 GSD = 0.1243 # km/pixel. For 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. 0.1036 km/pixel for 6mm lens.
 IMAGE_INTERVAL = 3 # Save every nth image
 
