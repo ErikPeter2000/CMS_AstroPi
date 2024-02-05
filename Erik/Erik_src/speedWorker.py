@@ -3,9 +3,12 @@ import math
 from worker import Worker
 from logzero import logger
 from statisticsUtils import meanAndDeviation, standardDeviationAngles, weightedMeanPairs
+from cv2Matcher import calculateMatches
 
 ACCEPTANCE = 1 # Value that increases the power in the score calculation. Higher acceptance means values with a higher deviation get a higher score
 REJECTION = 1 # Value that increases the denomination in the score calculation. Higher rejection means values with a higher deviation get a lower score
+DISTANCE_DEV_SCALE = 0.1 # Value that scales the deviation of the distance. Corrects the deviation to be more in line with the deviation of the angle
+ANGLE_DEV_SCALE = 10 # Value that scales the deviation of the angle. Corrects the deviation to be more in line with the deviation of the distance
 
 class SpeedWorker(Worker):
     """Worker that calculates the speed from a queue of `ImagePairs`"""
@@ -35,14 +38,16 @@ class SpeedWorker(Worker):
             y1 = coords1[i][1]
             x2 = coords2[i][0]
             y2 = coords2[i][1]
-            distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+            distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)*gsd
             distances.append(distance)
             angle = math.atan2((y2-y1),(x2-x1))
             angles.append(angle)
 
         # calculate the average distance and angle
         meanDistance, devDistance = meanAndDeviation(distances)
+        devDistance*=DISTANCE_DEV_SCALE
         devAngle = standardDeviationAngles(angles)
+        devAngle*=ANGLE_DEV_SCALE
         score = self.calculateScore(devDistance, devAngle)
 
         return (meanDistance, score)
@@ -58,11 +63,12 @@ class SpeedWorker(Worker):
                     matchData = calculateMatches(imagePair)
                     # calculate speed score and append to list
                     distance, score = self.calculateSpeedFromMatches(matchData, self.gsd)
-                    speedScorePairs.append((distance, score))
-                    speed = self._Worker__value
+                    speed = distance/imagePair.timeDifference
+                    speedScorePairs.append((speed, score))
 
-                    speed = weightedMeanPairs(speedScorePairs)
-                    self._Worker__value = speed    
+                    newSpeed = weightedMeanPairs(speedScorePairs)
+                    logger.info(f"Calculated Speed: {speed}, {score}. Average Speed: {newSpeed}")
+                    self._Worker__value = newSpeed    
             except Exception as e:
                 logger.error(e)
         self.cancel() # ensure the worker is marked as cancelled when the loop ends

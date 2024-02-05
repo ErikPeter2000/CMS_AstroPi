@@ -12,7 +12,7 @@ def standardDeviationAngles(values):
     Calculate the standard deviation of a list of angles.
     """
     mean = sum(values) / len(values)
-    return math.sqrt(sum((math.sin(x - mean) ** 2 for x in values) / len(values)))
+    return math.sqrt(sum((math.sin(x - mean) ** 2) for x in values) / len(values))
 
 def weightedMean(values, weights):
     """

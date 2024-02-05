@@ -12,7 +12,7 @@ def standardDeviationAngles(values):
     Calculate the standard deviation of a list of angles.
     """
     mean = sum(values) / len(values)
-    return math.sqrt(sum((math.sin(x - mean) ** 2 for x in values) / len(values)))
+    return math.sqrt(sum((math.sin(x - mean) ** 2) for x in values) / len(values))
 
 def weightedMean(values, weights):
     """
@@ -24,7 +24,21 @@ def weightedMeanPairs(values):
     """
     Calculate the weighted mean of a list of pairs of values.
     """
-    return (weightedMean([v[0] for v in values], [v[1] for v in values]), weightedMean([v[1] for v in values], [v[0] for v in values]))
+    return weightedMean([v[0] for v in values], [v[1] for v in values])
+
+def meanAndDeviation(values):
+    """
+    Calculate the mean and standard deviation of a list of values.
+    """
+    mean = sum(values) / len(values)
+    return (mean, math.sqrt(sum((x - mean) ** 2 for x in values) / len(values)))
+
+def meanAndDeviationAngles(values):
+    """
+    Calculate the mean and standard deviation of a list of angles.
+    """
+    mean = sum(values) / len(values)
+    return (mean, math.sqrt(sum((math.sin(x - mean) ** 2 for x in values) / len(values))))
 
 def mean(values):
     return sum(values) / len(values)
