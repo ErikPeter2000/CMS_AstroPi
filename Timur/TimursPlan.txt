@@ -1,0 +1,13 @@
+Calculation algorithm:
+
+1) Take the first image (or use the second image from the previous iteration).
+2) Get the distance from the camera to the surface of the earth.
+3) Get an area of 1 pixel (treat the distance as sqrt(area)?).
+4) Wait n seconds (to set up later).
+5) Take the second image. 
+6) Find matching details, average out the lines connecting the matching details (Average line of match).
+7) Use the distance of the line of match with the "distance" of 1 pixel to calculate the change in the distance.
+8) Speed = dx/n.
+9) Repeat 1-9 steps, keeping track of time left, print out the result when the time runs out.
+
+Note: for more accurate results all the calculation results in steps 2,3 and 8 should be averaged out with the results from the previous iterations.
