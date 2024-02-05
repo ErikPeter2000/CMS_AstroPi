@@ -3,7 +3,7 @@ import os
 import shutil
 
 PATH = BASE_FOLDER = Path(__file__).parent.resolve()
-IMAGE_PATH = PATH / "../Images/Example"
+IMAGE_PATH = PATH / "../../Images/Satellite"
 
 class CameraWrapper:
     index = 0
