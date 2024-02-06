@@ -17,7 +17,8 @@ class SpeedWorker(Worker):
         coords2 = match_data.coordinates_2
         aveDistance = 0
         aveGradient = 0
-        score = 0
+        dscore = 0
+        gscore = 0
         if(len(coords1)==0): return (0, -1000000000)
         gradients = []
         speeds = []
@@ -34,17 +35,18 @@ class SpeedWorker(Worker):
             aveGradient += g/len(coords1)
 
         for i in range(0, len(coords1)):
-            score -= pow(gradients[i]-aveGradient,2)/len(coords1)
-            score -= pow(speeds[i]-aveDistance,2)/len(coords1)
+            gscore -= pow((gradients[i]-aveGradient),2)/len(coords1)
+            dscore -= pow((speeds[i]-aveDistance)/abs(aveDistance),2)/len(coords1)
+        logger.info(str(dscore) + "    " + str(gscore))
 
-
-        return (aveDistance/match_data.timeDifference*gsd, score)
+        return (aveDistance/match_data.timeDifference*gsd, dscore+gscore)
 
     def work(self):
         """While not cancelled, calculate and refine a value for speed using the queue of `ImagePairs`"""
         processedCount = 0  # local variables for number of speed values that have been processed
         speednscore = []
         aveScore = 0
+        fSpeed = 0
         while not self.cancelled:  # loop until cancelled
             try:
                 if not self.queue.empty():
@@ -55,21 +57,20 @@ class SpeedWorker(Worker):
                     speednscore.append([nspeed, score])
                     speed = self._Worker__value
                     aveScore = (aveScore*processedCount + score)/(processedCount+1)
+
+                    normScore = aveScore + abs(score - aveScore)
+                    normSpeed = speed
+
+                    fSpeed = (fSpeed*processedCount + normSpeed)/(processedCount+1)
+
                     newSpeed = (speed*processedCount + nspeed)/(processedCount+1)
                     processedCount+=1
                     self._Worker__value = newSpeed    
             except Exception as e:
                 logger.error(e)
 
-        fSpeed = 0
 
-        for i in range(len(speednscore)):
-            speed = speednscore[i][0]
-            score = speednscore[i][1]
-            normScore = aveScore + abs(score - aveScore)
-            normSpeed = (aveScore/normScore)*speed
-
-            fSpeed += normSpeed/len(speednscore)
+        logger.info(fSpeed)
 
         self.cancel()
 
