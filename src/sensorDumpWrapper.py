@@ -55,7 +55,7 @@ class SensorDumpWrapper:
             logger.error(f"Insufficient space remaining to store image {path}.")
             return
         else:
-            imageName = datetime.now().strftime("image_%Y-%m-%d%_H%:M%:S:%f") + ".jpg"
+            imageName = f"image_{datetime.now().strftime('%Y-%m-%d_%H%M%S%f')}.jpg"
             imagePath = os.path.join(self.dumpFolder, imageName)
             shutil.copy(path, imagePath)
             self.imageIndex += 1
