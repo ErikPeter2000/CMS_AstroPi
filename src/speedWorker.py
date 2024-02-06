@@ -19,7 +19,7 @@ class SpeedWorker(Worker):
         aveGradient = 0
         dscore = 0
         gscore = 0
-        if(len(coords1)==0): return (0, -1000000000)
+        if(len(coords1)==0): return (0, 0)
         gradients = []
         speeds = []
         for i in range(0, len(coords1)): # iterate through all the matches and calculate the average distance
@@ -59,11 +59,13 @@ class SpeedWorker(Worker):
                     aveScore = (aveScore*processedCount + score)/(processedCount+1)
 
                     normScore = aveScore + abs(score - aveScore)
-                    normSpeed = speed
+                    normSpeed = (aveScore/normScore)*nspeed
 
                     fSpeed = (fSpeed*processedCount + normSpeed)/(processedCount+1)
-
                     newSpeed = (speed*processedCount + nspeed)/(processedCount+1)
+
+                    logger.info(str(fSpeed)+"    " + str(newSpeed))
+
                     processedCount+=1
                     self._Worker__value = newSpeed    
             except Exception as e:
