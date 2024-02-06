@@ -1,3 +1,4 @@
+# TODO: remember to replace the dummy classes with the actual classes
 from dummy.dummyCameraWrapper import CameraWrapper
 from dummy.dummySensorDumpWrapper import SensorDumpWrapper
 #from sensorDumpWrapper import SensorDumpWrapper
@@ -97,9 +98,6 @@ def main():
 if __name__ == "__main__":
     startTime = datetime.now()
     logfile(str(DATA_FOLDER / "events.log"))
-
-    # TODO: remember to replace the dummy classes with the actual classes
-    logger.warn("Unfinished! Using dummy classes. Please replace with actual classes.")
 
     logger.info(f"Started program {startTime.strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"Directory: {DATA_FOLDER}")

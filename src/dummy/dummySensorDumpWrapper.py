@@ -4,6 +4,7 @@ from logzero import logger
 class SensorDumpWrapper:
     """(dummy) Manages dumping sensor data to a csv and saving images."""
     def __init__(self, directory):
+        logger.warn("Using dummy SensorDumpWrapper. Please replace with actual classes.")
         self.__counter = 0
         self.dumpFolder = os.path.join(directory,"dump")
         os.makedirs(self.dumpFolder, exist_ok=True)

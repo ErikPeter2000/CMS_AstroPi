@@ -10,6 +10,7 @@ class CameraWrapper:
         self.camera.resolution = RESOLUTION
 
     def capture(self, path):
+        """Captures an image and saves it to the given path."""
         self.camera.capture(str(path))
 
     def close(self):
