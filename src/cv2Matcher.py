@@ -9,12 +9,14 @@ class ImagePair:
     def __init__(self, cv2image1, cv2image2, timeDifference):
         self.image1 = cv2image1
         self.image2 = cv2image2
+        self.resolution = (cv2image1.shape[1], cv2image1.shape[0])
         self.timeDifference = timeDifference
 
 class MatchData:
     """Stores the data needed to calculate the speed."""
-    def __init__(self, matches, timeDifference, keypoints1, keypoints2):
+    def __init__(self, matches, timeDifference, keypoints1, keypoints2, resolution):
         self.coordinates_1 = []
+        self.resolution = resolution
         self.coordinates_2 = []
         for match in matches:
             index1 = match.queryIdx
@@ -59,4 +61,4 @@ def calculateMatches(imagePair):
     kp2, desc2 = orb.detectAndCompute(image2, None)
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
     matches = bf.match(desc1,desc2)
-    return MatchData(matches, imagePair.timeDifference, kp1, kp2)
+    return MatchData(matches, imagePair.timeDifference, kp1, kp2, imagePair.resolution)

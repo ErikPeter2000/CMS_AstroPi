@@ -15,8 +15,8 @@ from queue import Queue
 
 ROOT_FOLDER = (Path(__file__).parent).resolve()
 DATA_FOLDER = ROOT_FOLDER
-MAX_CALC_TIME = 5.80 # seconds
-INTERVAL = 0.10 # seconds
+MAX_CALC_TIME = 58.0 # seconds
+INTERVAL = 01.0 # seconds
 GSD = 0.1243 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
 IMAGE_INTERVAL = 3 # Save every nth image
 
