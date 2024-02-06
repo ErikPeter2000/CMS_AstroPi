@@ -7,9 +7,10 @@ import shutil
 from logzero import logger
 from datetime import datetime
 
-DATA_CAPACITY_BYTES = 250000000 # 250MB
+DATA_CAPACITY_BYTES = 260000000 # 260MB
+IMAGE_LIMIT= 41
 APPROXIMATE_IMAGE_SIZE_BYTES = 5000000 # 5MB
-import logging
+from logging import logger
 
 HEADER = "time,yaw,pitch,roll,compassNorth,magnetometerX,magnetometerY,magnetometerZ,gyroscopeX,gyroscopeY,gyroscopeZ,accelerometerX,accelerometerY,accelerometerZ,humidity,temperature,pressure"
 
@@ -17,7 +18,7 @@ class SensorDumpWrapper:
     """Manages dumping sensor data to a csv and saving images."""
     def __init__(self, directory):
         # create the dump folder
-        self.dumpFolder = os.path.join(directory,"dump")
+        self.dumpFolder = directory
         os.makedirs(self.dumpFolder, exist_ok=True)
         # create and open the csv file
         self.csvPath = os.path.join(self.dumpFolder, "data.csv")
@@ -29,6 +30,7 @@ class SensorDumpWrapper:
         
     def record(self):
         """Records sensor data to the csv file."""
+        # get sensor data
         orientation = SenseHat().get_orientation()
         compassNorth = SenseHat().get_compass()
         magnetometer = SenseHat().get_compass_raw()
@@ -37,13 +39,15 @@ class SensorDumpWrapper:
         humidity = SenseHat().get_humidity()
         temperature = SenseHat().get_temperature()
         pressure = SenseHat().get_pressure()
+        # format data
         dataExact = [datetime.now().strftime('%Y-%m-%d %H:%M:%s:%f'),orientation['yaw'],orientation['pitch'],orientation['roll'],compassNorth,magnetometer['x'],magnetometer['y'],magnetometer['z'],gyroscope['x'],gyroscope['y'],gyroscope['z'],accelerometer['x'],accelerometer['y'],accelerometer['z'],humidity,temperature,pressure]
         dataRounded = [round(x, 2) if isinstance(x, float) else x for x in dataExact]
+        # write data to file
         dataStr = ",".join(map(str, dataRounded))
         self.file.write(dataStr + '\n')
         # also recorded rounded values to the log
         dataRoundedStr = ",".join(map(str, dataRounded))
-        logging.logger.info(f"Recorded Sensor Data: {dataRoundedStr}")
+        logger.info(f"Recorded Data: {dataRoundedStr}")
 
     def copyImage(self, path):
         """Copies an image to the dump folder. The image is renamed to the current time."""
@@ -54,16 +58,19 @@ class SensorDumpWrapper:
         elif (not self.spaceRemaining(imageSize)):
             logger.error(f"Insufficient space remaining to store image {path}.")
             return
+        elif (self.imageIndex >= IMAGE_LIMIT):
+            logger.error(f"Image limit reached. Could not store image {path}.")
+            return
         else:
             imageName = f"image_{datetime.now().strftime('%Y-%m-%d_%H%M%S%f')}.jpg"
             imagePath = os.path.join(self.dumpFolder, imageName)
             shutil.copy(path, imagePath)
             self.imageIndex += 1
-            logger.info(f"Image {path} saved to {imagePath}, {self.imageIndex} images in data folder.")
+            logger.info(f"Image {path} by name {imageName}. {self.imageIndex}/{IMAGE_LIMIT} images in data folder.")
 
     @property
     def dataSize(self):
-        "returns the size of the data folder in bytes"
+        "returns the size of the dump folder in bytes"
         return sum(os.path.getsize(f) for f in os.listdir(self.dumpFolder) if os.path.isfile(f))
     
     @property

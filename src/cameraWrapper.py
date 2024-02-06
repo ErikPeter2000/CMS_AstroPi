@@ -14,6 +14,7 @@ class CameraWrapper:
         self.camera.capture(str(path))
 
     def close(self):
+        """Closes the camera."""
         self.camera.close()
 
     def __enter__(self):

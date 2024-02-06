@@ -11,9 +11,10 @@
 .vscode/
 
 # src
-src/dump/*
+src/data.csv
 src/speed.txt
-src/evemts.log
+src/result.txt
+src/events.log
 
 # Blender
 *.blend1
