@@ -25,7 +25,7 @@ from queue import Queue
 # Constants
 ROOT_FOLDER = (Path(__file__).parent).resolve()
 MAX_CALC_TIME = 585 # seconds 585s=9m45s
-INTERVAL = 10 # seconds
+INTERVAL = 5 # seconds. Bear in mind that the camera takes an additional two seconds to capture an image
 GSD = 0.1243 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
 IMAGE_INTERVAL = 3 # Save every nth image
 REQUIRED_IMAGES_FOR_MATCH = 2

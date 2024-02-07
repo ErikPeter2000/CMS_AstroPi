@@ -65,7 +65,7 @@ class SensorDumpWrapper:
             imagePath = os.path.join(self.dumpFolder, imageName)
             shutil.copy(path, imagePath)
             self.imageIndex += 1
-            logger.info(f"Image {path} by name {imageName}. {self.imageIndex}/{IMAGE_LIMIT} images in data folder.")
+            logger.info(f"Image {path} by name {imageName}. {self.imageIndex}/{IMAGE_LIMIT} images marked for return.")
 
     @property
     def dataSize(self):
