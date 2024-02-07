@@ -7,10 +7,10 @@
 # with... statements in wrapper objects also ensure that resources are closed properly.
 
 # TODO: remember to replace the dummy classes with the actual classes
-from dummy.dummyCameraWrapper import CameraWrapper
-from dummy.dummySensorDumpWrapper import SensorDumpWrapper
-#from sensorDumpWrapper import SensorDumpWrapper
-#from cameraWrapper import CameraWrapper
+#from dummy.dummyCameraWrapper import CameraWrapper
+#from dummy.dummySensorDumpWrapper import SensorDumpWrapper
+from sensorDumpWrapper import SensorDumpWrapper
+from cameraWrapper import CameraWrapper
 
 from speedWorker import SpeedWorker
 from cv2Matcher import ImagePair, imageToCv2, timeDifference
