@@ -75,7 +75,7 @@ class SensorDumpWrapper:
     @property
     def remainingCapacity(self):
         "returns the remaining capacity of the data folder in bytes"
-        return DATA_CAPACITY_BYTES - self.dataSize()
+        return DATA_CAPACITY_BYTES - self.dataSize
     
     def spaceRemaining(self, size):
         "returns True if there is enough space remaining to store a file of size 'size'"
