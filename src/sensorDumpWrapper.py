@@ -22,8 +22,8 @@ class SensorDumpWrapper:
         # create and open the csv file
         self.csvPath = os.path.join(self.dumpFolder, "data.csv")
         self.file = open(self.csvPath, "w")
-        # set an index to the number of images in the dump folder
-        self.imageIndex = len(os.listdir(self.dumpFolder))
+        # set an index to the number of images in the dump folder that are jpgs
+        self.imageIndex = len([f for f in os.listdir(self.dumpFolder) if f.endswith('.jpg')])
         # write the csv header
         self.file.write(HEADER + '\n')
         

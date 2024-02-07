@@ -42,8 +42,8 @@ def writeSpeed(value):
     return value
 
 def roundSpeed(value):
-    """Rounds the speed to 5 significant figures, and returns a string."""
-    return f'{float(f"{value:.5g}"):g}'
+    """Rounds the speed to 6 digits maximum, and returns a string."""
+    return str(value)[0:min(6, len(value))]
 
 def processImageToSave(imagePath, sensorDump):
     """Copies the image to the data folder and renames if the counter % IMAGE_INTERVAL == 0."""

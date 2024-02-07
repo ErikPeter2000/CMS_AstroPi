@@ -70,12 +70,14 @@ class SpeedWorker(Worker):
 
     def work(self):
         """While not cancelled, calculate and refine a value for speed using the queue of `ImagePairs`"""
-        speedScorePairs = [] # list of speed and score pairs, for calculating the weighted mean
         try:
+            speedScorePairs = [] # list of speed and score pairs, for calculating the weighted mean
+            logger.info("SpeedWorker: Working...")
             while not self._Worker__cancelFlag.is_set(): # loop until cancelled. Uses the thread-safe `Event` to check if the worker is cancelled.
-                    if not self.queue.empty():
-                        # get pair and compute matches
-                        imagePair = self.queue.get(False)
+                if not self.queue.empty():
+                    # get pair and compute matches
+                    imagePair = self.queue.get(False)
+                    try:
                         matchData = calculateMatches(imagePair)
 
                         # calculate speed score and append to list
@@ -86,8 +88,8 @@ class SpeedWorker(Worker):
                         newSpeed = weightedMeanPairsWithDiscard(speedScorePairs, DISCARD_PERCENTILE)
                         logger.info(f"Calculated Speed: {speed}, {score}. Average Speed: {newSpeed}")
                         self._Worker__value = newSpeed
-        except Exception as e:
-            logger.error(e)
+                    except Exception as e:
+                        logger.error(f"Error occurred while calculating speed with: \n{e}")
         finally:
             self.cancel() # ensure the worker is marked as cancelled when the loop ends.
 
