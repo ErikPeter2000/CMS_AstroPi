@@ -1,9 +1,9 @@
 # Team Pie-Guys AstroPi code for the 2023-2024 mission SpaceLab
 # Author: Erik, Timur, Yotam, Samuel, 2023-2024
 # Our program uses one background thread in addition to the main. As instructed, we will document and explain our usage thoroughly.
-# By using a background thread, we can capture images and data; and process them simultaneously. The alternative is to capture all data and process them at the end.
-# We do this by loading a pair of images taken by the camera in the main thread. Me push these images to a queue, and the background thread processes them. We decided to load them in the main thread as to avoid using file handles in the background.
+# By using a background thread, we can capture images and data; and process them simultaneously. An alternative is to capture all data and process them at the end, but we decided against this.
 # We chose to use another thread to maximise the time we have to record data, and also calculate the speed in real-time.
+# We do this by loading a pair of images taken by the camera in the main thread. We push these images to a queue, and the background thread processes them. We decided to load them in the main thread as to avoid using file handles in the background. Since capturing images takes around 2 seconds and we had to wait some idle time between captures, we decided that the use of a background thread was the most suitable solution.
 # The use of try...finally clauses ensures that the threads are closed properly.
 # with... statements in wrapper objects also ensure that resources are closed properly.
 
@@ -89,7 +89,10 @@ def main():
         logger.info("Initialised SensorDumper")
         try:
             with SpeedWorker(GSD) as speedWorker:
-                speedThread = threading.Thread(target=speedWorker.work) # initialise the worker thread
+                # initialise the worker thread. We ensure that it is closed in the finally block
+                # the target function is the work loop in the speedworker class, that will dequeue image pairs and calculate the speed until cancelled
+                speedThread = threading.Thread(target=speedWorker.work)
+
                 logger.info("Initialised SpeedWorker Thread")
                 try:
                     with CameraWrapper() as camera:

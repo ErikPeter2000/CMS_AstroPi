@@ -7,7 +7,7 @@ import math
 from worker import Worker
 from logzero import logger
 from statisticsUtils import meanAndDeviation, standardDeviationAngles, weightedMeanPairsWithDiscard
-from cv2Matcher import calculateMatches
+import cv2Matcher
 
 # Constants
 # These values are used to determine the score for speed according to a function.
@@ -78,7 +78,7 @@ class SpeedWorker(Worker):
                     # get pair and compute matches
                     imagePair = self.queue.get(False)
                     try:
-                        matchData = calculateMatches(imagePair)
+                        matchData = cv2Matcher.calculateMatches(imagePair)
 
                         # calculate speed score and append to list
                         speed, score = self.calculateSpeedFromMatches(matchData, self.gsd)

@@ -22,16 +22,16 @@ class MatchData:
         for match in matches:
             index1 = match.queryIdx
             index2 = match.trainIdx
-            (x1,y1) = keypoints1[index1].pt
-            (x2,y2) = keypoints2[index2].pt
-            self.coordinates_1.append([x1,y1])
-            self.coordinates_2.append([x2,y2])
+            point1 = keypoints1[index1].pt
+            point2 = keypoints2[index2].pt
+            self.coordinates_1.append(point1)
+            self.coordinates_2.append(point2)
         self.timeDifference = timeDifference
     def __len__(self):
         return len(self.coordinates_1)
 
 def getTime(imagePath):
-    """Returns the time the image was taken using EXIF."""
+    """Returns the time the image was taken using EXIF and the image timestamp."""
     with open(imagePath, 'rb') as file:
         imagePath = Image(file)
         time = datetime.strptime(imagePath.get("datetime_original"), '%Y:%m:%d %H:%M:%S')
@@ -52,9 +52,11 @@ def calculateMatches(imagePair):
     """Calculates the matches pixel coordinates for a pair of two images. Returns MatchData."""
     image1 = imagePair.image1
     image2 = imagePair.image2
+    # Use cv2 to calculate the matches
     orb = cv2.ORB_create()
     kp1, desc1 = orb.detectAndCompute(image1, None)
     kp2, desc2 = orb.detectAndCompute(image2, None)
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
     matches = bf.match(desc1,desc2)
+    # return data necessary to calculate speed
     return MatchData(matches, imagePair.timeDifference, kp1, kp2, imagePair.resolution)
