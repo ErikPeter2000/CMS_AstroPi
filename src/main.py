@@ -2,6 +2,7 @@
 # Author: Erik, Timur, Yotam, Samuel, 2023-2024
 # Our program uses one background thread in addition to the main. As instructed, we will document and explain our usage thoroughly.
 # By using a background thread, we can capture images and data; and process them simultaneously. The alternative is to capture all data and process them at the end.
+# We do this by loading a pair of images taken by the camera in the main thread. Me push these images to a queue, and the background thread processes them. We decided to load them in the main thread as to avoid using file handles in the background.
 # We chose to use another thread to maximise the time we have to record data, and also calculate the speed in real-time.
 # The use of try...finally clauses ensures that the threads are closed properly.
 # with... statements in wrapper objects also ensure that resources are closed properly.
