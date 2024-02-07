@@ -79,7 +79,7 @@ class SensorDumpWrapper:
     
     def spaceRemaining(self, size):
         "returns True if there is enough space remaining to store a file of size 'size'"
-        return self.remainingCapacity() > size
+        return self.remainingCapacity > size
 
     def close(self):
         self.file.flush()
