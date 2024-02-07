@@ -10,7 +10,6 @@ from datetime import datetime
 DATA_CAPACITY_BYTES = 260000000 # 260MB
 IMAGE_LIMIT= 41
 APPROXIMATE_IMAGE_SIZE_BYTES = 5000000 # 5MB
-from logging import logger
 
 HEADER = "time,yaw,pitch,roll,compassNorth,magnetometerX,magnetometerY,magnetometerZ,gyroscopeX,gyroscopeY,gyroscopeZ,accelerometerX,accelerometerY,accelerometerZ,humidity,temperature,pressure"
 

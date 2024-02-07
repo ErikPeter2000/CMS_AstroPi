@@ -58,6 +58,7 @@ def speedLoop(speedWorker, camera, sensorDumper, imageQueue):
     while (datetime.now() - startTime).total_seconds() < MAX_CALC_TIME: # run for MAX_CALC_TIME seconds
         currentImagePath = ROOT_FOLDER / Path(f"./image{imageIndex}.jpg") # the path to store the captured image
         camera.capture(currentImagePath)
+        logger.info(f"Captured Image: {currentImagePath}")
         processImageToSave(currentImagePath, sensorDumper)
         imageQueue.put(currentImagePath) # enqueue the image for future match calculation
         
