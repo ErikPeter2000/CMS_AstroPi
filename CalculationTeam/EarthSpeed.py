@@ -17,5 +17,8 @@ def calculate(radius, spinTime, maxInclination, currentInclination, matchSpeed):
     aC = math.pi - math.radians(currentAngle) #angle for velocity triangle
     a = newEarthSpeed #side for velocity triangle
     c = matchSpeed #side for velocity triangle
-    newSpeed = (c * math.sin(math.pi - aC - math.asin((a * math.sin(aC)) / c))) / (math.sin(aC)) #velocity triangle and trigonometry
+    if aC != 0:
+        newSpeed = (c * math.sin(math.pi - aC - math.asin((a * math.sin(aC)) / c))) / (math.sin(aC)) #velocity triangle and trigonometry
+    else:
+        newSpeed = a + c #in case aC = 0
     return newSpeed #returns the adjusted speed in metres per second
