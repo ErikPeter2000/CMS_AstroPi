@@ -1,16 +1,16 @@
 # Utility functions for calculating means and deviations.
+# Numpy was used where possible to improve performance.
 
 import math
 import numpy as np
 
 def standardDeviation(values):
     """Calculate the standard deviation of a list of values."""
-    mean = sum(values) / len(values)
-    return math.sqrt(sum((x - mean) ** 2 for x in values) / len(values))
+    return np.std(values)
 
 def standardDeviationAngles(values):
     """Calculate the standard deviation of a list of angles."""
-    mean = sum(values) / len(values)
+    mean = np.mean(values)
     return math.sqrt(sum((math.sin(x - mean) ** 2) for x in values) / len(values))
 
 def weightedMean(values, weights):
@@ -45,9 +45,8 @@ def discardOutliers(pairs, percentile):
     max = np.percentile(values, 100 - percentile)
     min = np.percentile(values, percentile)
     
-    # Filter the list to only include with the given range
-    filtered_values = filter(lambda x: x[0] <= max and x[0] >= min, pairs)
-    return list(filtered_values)
+    # Filter the list to only include with the given range    
+    return [f for f in pairs if f[0] <= max and f[0] >= min]
 
 def mean(values):
-    return sum(values) / len(values)
+    return np.mean(values)

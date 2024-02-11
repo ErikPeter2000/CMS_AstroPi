@@ -6,11 +6,8 @@
 # The use of try...finally clauses ensures that the threads are closed properly.
 # with... statements in wrapper objects also ensure that resources are closed properly.
 
-# TODO: remember to replace the dummy classes with the actual classes
-from dummy.dummyCameraWrapper import CameraWrapper
-from dummy.dummySensorDumpWrapper import SensorDumpWrapper
-#from sensorDumpWrapper import SensorDumpWrapper
-#from cameraWrapper import CameraWrapper
+from sensorDumpWrapper import SensorDumpWrapper
+from cameraWrapper import CameraWrapper
 
 from speedWorker import SpeedWorker
 from cv2Matcher import ImagePair, imageToCv2, timeDifference
@@ -28,7 +25,7 @@ MAX_CALC_TIME = 585 # seconds 585s=9m45s
 INTERVAL = 10 # seconds
 GSD = 0.1243 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
 IMAGE_INTERVAL = 3 # Save every nth image
-REQUIRED_IMAGES_FOR_MATCH = 2
+REQUIRED_IMAGES_FOR_MATCH = 2 # The number of images needed to calculate a match
 
 # Globals
 imageCaptureCounter = 0
@@ -37,7 +34,6 @@ startTime = None
 def writeSpeed(value):
     """Writes the speed to speed.txt."""
     with open(str(ROOT_FOLDER / "result.txt"), "w") as file:
-        #file.write(str(value)+"km/s")
         file.write(value)
     return value
 

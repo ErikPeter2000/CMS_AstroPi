@@ -1,4 +1,4 @@
-"""Manages dumping sensor data to a csv."""
+# Manages dumping sensor data to a csv.
 
 from sense_hat import SenseHat
 from datetime import datetime
@@ -10,8 +10,8 @@ from datetime import datetime
 DATA_CAPACITY_BYTES = 260000000 # 260MB
 IMAGE_LIMIT= 41
 APPROXIMATE_IMAGE_SIZE_BYTES = 5000000 # 5MB
-from logging import logger
 
+# The header of the all sensor data
 HEADER = "time,yaw,pitch,roll,compassNorth,magnetometerX,magnetometerY,magnetometerZ,gyroscopeX,gyroscopeY,gyroscopeZ,accelerometerX,accelerometerY,accelerometerZ,humidity,temperature,pressure"
 
 class SensorDumpWrapper:
@@ -27,18 +27,19 @@ class SensorDumpWrapper:
         self.imageIndex = len(os.listdir(self.dumpFolder))
         # write the csv header
         self.file.write(HEADER + '\n')
+        self.sense_hat = SenseHat()
         
     def record(self):
         """Records sensor data to the csv file."""
         # get sensor data
-        orientation = SenseHat().get_orientation()
-        compassNorth = SenseHat().get_compass()
-        magnetometer = SenseHat().get_compass_raw()
-        gyroscope = SenseHat().get_gyroscope_raw()
-        accelerometer = SenseHat().get_accelerometer_raw()
-        humidity = SenseHat().get_humidity()
-        temperature = SenseHat().get_temperature()
-        pressure = SenseHat().get_pressure()
+        orientation = self.sense_hat.get_orientation()
+        compassNorth = self.sense_hat.get_compass()
+        magnetometer = self.sense_hat.get_compass_raw()
+        gyroscope = self.sense_hat.get_gyroscope_raw()
+        accelerometer = self.sense_hat.get_accelerometer_raw()
+        humidity = self.sense_hat.get_humidity()
+        temperature = self.sense_hat.get_temperature()
+        pressure = self.sense_hat.get_pressure()
         # format data
         dataExact = [datetime.now().strftime('%Y-%m-%d %H:%M:%s:%f'),orientation['yaw'],orientation['pitch'],orientation['roll'],compassNorth,magnetometer['x'],magnetometer['y'],magnetometer['z'],gyroscope['x'],gyroscope['y'],gyroscope['z'],accelerometer['x'],accelerometer['y'],accelerometer['z'],humidity,temperature,pressure]
         dataRounded = [round(x, 2) if isinstance(x, float) else x for x in dataExact]

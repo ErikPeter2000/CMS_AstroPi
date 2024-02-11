@@ -15,7 +15,7 @@ Developed in [Python 3.11.5](https://www.python.org/).
  - [picamera](https://pypi.org/project/picamera/)
 
 ## Useful Links
- - [Timeline](https://drive.google.com/file/d/13shLaPVPRtqW_dJVC9sglgpTVlJxrLiL/view)
+ - [Project Timeline](https://drive.google.com/file/d/13shLaPVPRtqW_dJVC9sglgpTVlJxrLiL/view)
  - [Picamera Guide](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/1)
  - [Mission Space Lab Rulebook](https://astro-pi.org/mission-space-lab/rulebook)
  - [Logging Guide](https://projects.raspberrypi.org/en/projects/mission-space-lab-creator-guide/3)

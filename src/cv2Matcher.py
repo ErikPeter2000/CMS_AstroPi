@@ -1,4 +1,4 @@
-"""For matching images using cv2."""
+# For matching images using cv2.
 
 from exif import Image
 from datetime import datetime
