@@ -1,8 +1,9 @@
 # Team Pie-Guys AstroPi code for the 2023-2024 mission SpaceLab
 # Author: Erik, Timur, Yotam, Samuel, 2023-2024
 # Our program uses one background thread in addition to the main. As instructed, we will document and explain our usage thoroughly.
-# By using a background thread, we can capture images and data; and process them simultaneously. The alternative is to capture all data and process them at the end.
+# By using a background thread, we can capture images and data; and process them simultaneously. An alternative is to capture all data and process them at the end, but we decided against this.
 # We chose to use another thread to maximise the time we have to record data, and also calculate the speed in real-time.
+# We do this by loading a pair of images taken by the camera in the main thread. We push these images to a queue, and the background thread processes them. We decided to load them in the main thread as to avoid using file handles in the background. Since capturing images takes around 2 seconds and we had to wait some idle time between captures, we decided that the use of a background thread was the most suitable solution.
 # The use of try...finally clauses ensures that the threads are closed properly.
 # with... statements in wrapper objects also ensure that resources are closed properly.
 
@@ -22,7 +23,7 @@ from queue import Queue
 # Constants
 ROOT_FOLDER = (Path(__file__).parent).resolve()
 MAX_CALC_TIME = 585 # seconds 585s=9m45s
-INTERVAL = 10 # seconds
+INTERVAL = 5 # seconds. Bear in mind that the camera takes an additional two seconds to capture an image
 GSD = 0.1243 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
 IMAGE_INTERVAL = 3 # Save every nth image
 REQUIRED_IMAGES_FOR_MATCH = 2 # The number of images needed to calculate a match
@@ -38,8 +39,8 @@ def writeSpeed(value):
     return value
 
 def roundSpeed(value):
-    """Rounds the speed to 5 significant figures, and returns a string."""
-    return f'{float(f"{value:.5g}"):g}'
+    """Rounds the speed to 6 digits maximum, and returns a string."""
+    return str(value)[0:min(6, len(value))]
 
 def processImageToSave(imagePath, sensorDump):
     """Copies the image to the data folder and renames if the counter % IMAGE_INTERVAL == 0."""
@@ -54,6 +55,7 @@ def speedLoop(speedWorker, camera, sensorDumper, imageQueue):
     while (datetime.now() - startTime).total_seconds() < MAX_CALC_TIME: # run for MAX_CALC_TIME seconds
         currentImagePath = ROOT_FOLDER / Path(f"./image{imageIndex}.jpg") # the path to store the captured image
         camera.capture(currentImagePath)
+        logger.info(f"Captured Image: {currentImagePath}")
         processImageToSave(currentImagePath, sensorDumper)
         imageQueue.put(currentImagePath) # enqueue the image for future match calculation
         
@@ -83,7 +85,10 @@ def main():
         logger.info("Initialised SensorDumper")
         try:
             with SpeedWorker(GSD) as speedWorker:
-                speedThread = threading.Thread(target=speedWorker.work) # initialise the worker thread
+                # initialise the worker thread. We ensure that it is closed in the finally block
+                # the target function is the work loop in the speedworker class, that will dequeue image pairs and calculate the speed until cancelled
+                speedThread = threading.Thread(target=speedWorker.work)
+
                 logger.info("Initialised SpeedWorker Thread")
                 try:
                     with CameraWrapper() as camera:

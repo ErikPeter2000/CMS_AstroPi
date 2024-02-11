@@ -3,6 +3,7 @@
 from exif import Image
 from datetime import datetime
 import cv2
+import numpy as np
 
 class ImagePair:
     """Stores a pair of two images for matching."""
@@ -21,16 +22,16 @@ class MatchData:
         for match in matches:
             index1 = match.queryIdx
             index2 = match.trainIdx
-            (x1,y1) = keypoints1[index1].pt
-            (x2,y2) = keypoints2[index2].pt
-            self.coordinates_1.append([x1,y1])
-            self.coordinates_2.append([x2,y2])
+            point1 = keypoints1[index1].pt
+            point2 = keypoints2[index2].pt
+            self.coordinates_1.append(point1)
+            self.coordinates_2.append(point2)
         self.timeDifference = timeDifference
     def __len__(self):
         return len(self.coordinates_1)
 
 def getTime(imagePath):
-    """Returns the time the image was taken using EXIF."""
+    """Returns the time the image was taken using EXIF and the image timestamp."""
     with open(imagePath, 'rb') as file:
         imagePath = Image(file)
         time = datetime.strptime(imagePath.get("datetime_original"), '%Y:%m:%d %H:%M:%S')
@@ -42,23 +43,20 @@ def timeDifference(imagePath1, imagePath2):
     time2 = getTime(imagePath2)
     return abs(time1 - time2).total_seconds()
 
-def imageToCv2(imagePath):
-    """Converts an image to a cv2 image given its path."""
-    image = cv2.imread(str(imagePath), 0)
-    return image
-
 def pathToCv2(imagePath):
     """Converts an image to a cv2 image given its path."""
-    image = cv2.imread(str(imagePath), 0)
+    image = cv2.imdecode(np.fromfile(imagePath, dtype=np.uint8), cv2.IMREAD_GRAYSCALE)
     return image
 
 def calculateMatches(imagePair):
     """Calculates the matches pixel coordinates for a pair of two images. Returns MatchData."""
     image1 = imagePair.image1
     image2 = imagePair.image2
+    # Use cv2 to calculate the matches
     orb = cv2.ORB_create()
     kp1, desc1 = orb.detectAndCompute(image1, None)
     kp2, desc2 = orb.detectAndCompute(image2, None)
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
     matches = bf.match(desc1,desc2)
+    # return data necessary to calculate speed
     return MatchData(matches, imagePair.timeDifference, kp1, kp2, imagePair.resolution)

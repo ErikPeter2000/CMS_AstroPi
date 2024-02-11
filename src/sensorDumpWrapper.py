@@ -23,8 +23,8 @@ class SensorDumpWrapper:
         # create and open the csv file
         self.csvPath = os.path.join(self.dumpFolder, "data.csv")
         self.file = open(self.csvPath, "w")
-        # set an index to the number of images in the dump folder
-        self.imageIndex = len(os.listdir(self.dumpFolder))
+        # set an index to the number of images in the dump folder that are jpgs
+        self.imageIndex = len([f for f in os.listdir(self.dumpFolder) if f.endswith('.jpg')])
         # write the csv header
         self.file.write(HEADER + '\n')
         self.sense_hat = SenseHat()
@@ -67,7 +67,7 @@ class SensorDumpWrapper:
             imagePath = os.path.join(self.dumpFolder, imageName)
             shutil.copy(path, imagePath)
             self.imageIndex += 1
-            logger.info(f"Image {path} by name {imageName}. {self.imageIndex}/{IMAGE_LIMIT} images in data folder.")
+            logger.info(f"Image {path} by name {imageName}. {self.imageIndex}/{IMAGE_LIMIT} images marked for return.")
 
     @property
     def dataSize(self):
@@ -77,11 +77,11 @@ class SensorDumpWrapper:
     @property
     def remainingCapacity(self):
         "returns the remaining capacity of the data folder in bytes"
-        return DATA_CAPACITY_BYTES - self.dataSize()
+        return DATA_CAPACITY_BYTES - self.dataSize
     
     def spaceRemaining(self, size):
         "returns True if there is enough space remaining to store a file of size 'size'"
-        return self.remainingCapacity() > size
+        return self.remainingCapacity > size
 
     def close(self):
         self.file.flush()
