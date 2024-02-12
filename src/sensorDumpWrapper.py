@@ -41,7 +41,7 @@ class SensorDumpWrapper:
         temperature = self.sense_hat.get_temperature()
         pressure = self.sense_hat.get_pressure()
         # format data
-        dataExact = [datetime.now().strftime('%Y-%m-%d %H:%M:%s:%f'),orientation['yaw'],orientation['pitch'],orientation['roll'],compassNorth,magnetometer['x'],magnetometer['y'],magnetometer['z'],gyroscope['x'],gyroscope['y'],gyroscope['z'],accelerometer['x'],accelerometer['y'],accelerometer['z'],humidity,temperature,pressure]
+        dataExact = [datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f'),orientation['yaw'],orientation['pitch'],orientation['roll'],compassNorth,magnetometer['x'],magnetometer['y'],magnetometer['z'],gyroscope['x'],gyroscope['y'],gyroscope['z'],accelerometer['x'],accelerometer['y'],accelerometer['z'],humidity,temperature,pressure]
         dataRounded = [round(x, 2) if isinstance(x, float) else x for x in dataExact]
         # write data to file
         dataStr = ",".join(map(str, dataRounded))
