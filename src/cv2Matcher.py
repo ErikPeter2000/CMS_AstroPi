@@ -45,7 +45,7 @@ def timeDifference(imagePath1, imagePath2):
 
 def imageToCv2(imagePath):
     """Converts an image to a cv2 image given its path."""
-    image = cv2.imdecode(np.fromfile(imagePath, dtype=np.uint8), cv2.IMREAD_GRAYSCALE)
+    image = cv2.imdecode(np.fromfile(imagePath, dtype=np.float32), cv2.IMREAD_GRAYSCALE)
     return image
 
 def calculateMatches(imagePair):
