@@ -48,7 +48,7 @@ class SpeedWorker(Worker):
         coords1 = match_data.coordinates_1
         coords2 = match_data.coordinates_2
         time = match_data.timeDifference
-        if len(coords1) == 0:
+        if len(coords1) == 0 or time == 0:
             return (0,0)
         
         # iterate through matches and find gradients and distances
