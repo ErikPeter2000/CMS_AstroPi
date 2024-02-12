@@ -18,7 +18,7 @@ def standardDeviationAngles(values):
 def weightedMean(values, weights):
     """Calculate the weighted mean of a list of values."""
     if sum(weights) == 0:
-        weights = [1]
+        weights = [1 for i in values]
     return sum(values[i] * weights[i] for i in range(len(values))) / sum(weights)
 
 def weightedMeanPairs(values):
