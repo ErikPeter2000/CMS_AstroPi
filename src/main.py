@@ -6,6 +6,7 @@
 # We do this by loading a pair of images taken by the camera in the main thread. We push these images to a queue, and the background thread processes them. We decided to load them in the main thread as to avoid using file handles in the background. Since capturing images takes around 2 seconds and we had to wait some idle time between captures, we decided that the use of a background thread was the most suitable solution.
 # The use of try...finally clauses ensures that the threads are closed properly.
 # with... statements in wrapper objects also ensure that resources are closed properly.
+# The repo can be found in ErikPeter2000's GitHub account. Links are not allowed in code.
 
 from sensorDumpWrapper import SensorDumpWrapper
 from cameraWrapper import CameraWrapper
@@ -40,7 +41,8 @@ def writeSpeed(value):
 
 def roundSpeed(value):
     """Rounds the speed to 6 digits maximum, and returns a string."""
-    return str(value)[0:min(6, len(value))]
+    string = str(value)
+    return string[0:min(6, len(string))]
 
 def processImageToSave(imagePath, sensorDump):
     """Copies the image to the data folder and renames if the counter % IMAGE_INTERVAL == 0."""

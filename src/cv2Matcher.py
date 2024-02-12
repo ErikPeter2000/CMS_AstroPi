@@ -43,7 +43,7 @@ def timeDifference(imagePath1, imagePath2):
     time2 = getTime(imagePath2)
     return abs(time1 - time2).total_seconds()
 
-def pathToCv2(imagePath):
+def imageToCv2(imagePath):
     """Converts an image to a cv2 image given its path."""
     image = cv2.imdecode(np.fromfile(imagePath, dtype=np.uint8), cv2.IMREAD_GRAYSCALE)
     return image

@@ -12,10 +12,10 @@ import cv2Matcher
 # Constants
 # These values are used to determine the score for speed according to a function.
 # Speeds outside the 1kms^-1 start to become penalised considerably.
-ACCEPTANCE = 1 # Value that increases the power in the score calculation. Higher acceptance means values with a higher deviation get a higher score
-EXPECTED = 7.66
-EXPECTED_FALLOFF = 4 # The acceptance for deviations around the mean. Higher falloff means the acceptance is higher for speed values further from 7.66
-REJECTION = 2 # Value that increases the denomination in the score calculation. Higher rejection means values with a higher deviation get a lower score
+ACCEPTANCE = 4 # Value that increases the power in the score calculation. Higher acceptance means values with a higher deviation get a higher score
+EXPECTED = 7.5 # The expected speed value. This is different from 7.66 because I dont want to be too biased.
+EXPECTED_FALLOFF = 10 # The acceptance for deviations around the mean. Higher falloff means the acceptance is higher for speed values further from 7.66
+REJECTION = 1 # Value that increases the denomination in the score calculation. Higher rejection means values with a higher deviation get a lower score
 DISTANCE_DEV_SCALE = 0.1 # Value that scales the deviation of the distance. Corrects the deviation to be more in line with the deviation of the angle
 ANGLE_DEV_SCALE = 10 # Value that scales the deviation of the angle. Corrects the deviation to be more in line with the deviation of the distance
 DISCARD_PERCENTILE = 20 # Percentile of values to discard before calculating the weighted mean
@@ -31,9 +31,15 @@ class SpeedWorker(Worker):
     def calculateScore(self, speed, d0, d1):
         """Calculate the score from speed and two deviations (distance and angle)."""
         # A bell curve is formed by considering the speed, distance deviation.
+        # Speed values between EXPECTED_MIN and EXPECTED_MAX get a score of 1 for speed.
+        # Deviations with a lower value get a higher score, and deviations with a higher value get a lower score.
+        # The two scores are multiplied and reciprocated to get the final score.
+        # In summary, values between 5 and 10 get a score of 1, and values outside this range get a lower score.
+        # A link can be found in our README to a Desmos graph of the function to show that it is not biased to 7.66. Links are not allowed in code.
+        # The repo can be found under ErikPeter2000's account.
         m = REJECTION ** ACCEPTANCE
         devDenominator = m*(d0**2+d1**2)**ACCEPTANCE
-        speedDenominator = (REJECTION*(speed-EXPECTED)**EXPECTED_FALLOFF)
+        speedDenominator = ((speed-EXPECTED)/ACCEPTANCE)**EXPECTED_FALLOFF
         return 1/(devDenominator*speedDenominator+1)
 
     def calculateSpeedFromMatches(self, match_data, gsd):

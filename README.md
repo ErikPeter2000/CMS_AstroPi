@@ -21,6 +21,7 @@ Developed in [Python 3.11.5](https://www.python.org/).
  - [Logging Guide](https://projects.raspberrypi.org/en/projects/mission-space-lab-creator-guide/3)
  - [Disallowed Libraries](https://docs.google.com/spreadsheets/d/1EoVzgA8gOiDXsJ1k9dQBdPyFC8U3bXFca2dRmdKNbcI/edit#gid=0)
  - [Sense Hat API](https://pythonhosted.org/sense-hat/api/)
+ - [Speed Profile for Scoring System](https://www.desmos.com/calculator/we4vr4yio8): Shows how scores are given to speeds in our calculations.
 
 ## Our Team
 Official Team Name: **Pie-Guys**.  

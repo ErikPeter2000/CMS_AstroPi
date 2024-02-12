@@ -15,6 +15,7 @@ src/data.csv
 src/speed.txt
 src/result.txt
 src/events.log
+src/dummy
 
 # Blender
 *.blend1
