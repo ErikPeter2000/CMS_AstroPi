@@ -10,11 +10,15 @@ def standardDeviation(values):
 
 def standardDeviationAngles(values):
     """Calculate the standard deviation of a list of angles."""
+    if (len(values) == 0):
+        return 0
     mean = np.mean(values)
     return math.sqrt(sum((math.sin(x - mean) ** 2) for x in values) / len(values))
 
 def weightedMean(values, weights):
     """Calculate the weighted mean of a list of values."""
+    if sum(weights) == 0:
+        weights = [1]
     return sum(values[i] * weights[i] for i in range(len(values))) / sum(weights)
 
 def weightedMeanPairs(values):
@@ -28,12 +32,16 @@ def weightedMeanPairsWithDiscard(pairs, percentile):
 
 def meanAndDeviation(values):
     """Calculate the mean and standard deviation of a list of values."""
+    if len(values) == 0:
+        return (0,0)
     mean = sum(values) / len(values)
     return (mean, math.sqrt(sum((x - mean) ** 2 for x in values) / len(values)))
 
 def meanAndDeviationAngles(values):
     """Calculate the mean and standard deviation of a list of angles."""
-    mean = sum(values) / len(values)
+    if len(values) == 0:
+        return (0,0)
+    mean = np.mean(values)
     return (mean, math.sqrt(sum((math.sin(x - mean) ** 2 for x in values) / len(values))))
 
 def discardOutliers(pairs, percentile):
