@@ -1,6 +1,8 @@
+# Manages the Raspberry Pi Camera. Images are 4056 x 3040 by default. Implements some context management for easier disposal.
+
 from picamera import PiCamera
 
-RESOLUTION = (4056, 3040)
+RESOLUTION = (4056, 3040) # Default resolution of the Raspberry Pi Camera
 
 
 class CameraWrapper:

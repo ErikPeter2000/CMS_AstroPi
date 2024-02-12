@@ -12,25 +12,25 @@
 
 4. Ascending Node: Where the ellipse intersects upwards through the reference plane. Usually given as a longitude coordinate. The Longitude (angle) is represented as `Ω`.
 
-5. Argument of periapsis: The orientation of the ellipse around the orbital plane, measured from the ascending node to the periapsis. Rep: `ω`.
+5. Argument of Periapsis: The orientation of the ellipse around the orbital plane, measured from the ascending node to the periapsis. Rep: `ω`.
 
-6. True anomaly: The position of the body on the ellipse, in degrees. Rep: `ν` or `θ`.
+6. True Anomaly: The position of the body on the ellipse, in degrees. Rep: `ν` or `θ`.
 
 ## Other Terminology
-1. Epoch: the position of the body at t=0.
+1. Epoch: The position of the body at t=0.
 
 2. Period: The time it takes for the body to complete one orbit.
 3. Apoapsis/Apogee: Furthest distance from orbiting body.
 
 4. Periapsis/Perigee: Closes distance to orbiting body.
 
-6. Semi-minor axis: Closest distance to the centre of the orbital ellipse.
+6. Semi-Minor Axis: Closest distance to the centre of the orbital ellipse.
 
 7. Mean Anomaly: A fictitious 'angle' that represents the fraction of the period passed of the body in orbit. Has no geometric representation.
 
-8. Primary body: The massive body.
+8. Primary Body: The massive body.
 
-9. Secondary body: The satellite.
+9. Secondary Body: The satellite.
 
 10. Geocentric Equatorial Coordinate System: A non-rotating coordinate system that uses the sun as a reference. It's commonly used for describing satellite positions.
 
