@@ -22,10 +22,11 @@ DISCARD_PERCENTILE = 20 # Percentile of values to discard before calculating the
 
 class SpeedWorker(Worker):
     """Worker that calculates the speed from a queue of `ImagePairs`"""
-    def __init__(self, gsd):
+    def __init__(self, gsd_x,gsd_y):
         """Worker that calculates the speed from a queue of `ImagePairs`"""
         super().__init__()
-        self.gsd = gsd
+        self.gsd_x = gsd_x
+        self.gsd_y = gsd_y
         self._Worker__value = 0
 
     def calculateScore(self, speed, d0, d1):
@@ -42,7 +43,7 @@ class SpeedWorker(Worker):
         speedDenominator = ((speed-EXPECTED)/ACCEPTANCE)**EXPECTED_FALLOFF
         return 1/(devDenominator*speedDenominator+1)
 
-    def calculateSpeedFromMatches(self, match_data, gsd):
+    def calculateSpeedFromMatches(self, match_data, gsd_x,gsd_y):
         """Returns the speed and score from a set of matches and a specified Ground Sample Distance (gsd)"""
         # extract coordinates from match data
         coords1 = match_data.coordinates_1
@@ -59,7 +60,7 @@ class SpeedWorker(Worker):
             y1 = coords1[i][1]
             x2 = coords2[i][0]
             y2 = coords2[i][1]
-            distance = math.sqrt((x2-x1)**2 + (y2-y1)**2)*gsd
+            distance = math.sqrt(((x2-x1)*math.sqrt(gsd_x))**2 + ((y2-y1)*math.sqrt(gsd_y))**2)
             distances.append(distance)
             angle = math.atan2((y2-y1),(x2-x1))
             angles.append(angle)
@@ -87,7 +88,7 @@ class SpeedWorker(Worker):
                         matchData = cv2Matcher.calculateMatches(imagePair)
 
                         # calculate speed score and append to list
-                        speed, score = self.calculateSpeedFromMatches(matchData, self.gsd)
+                        speed, score = self.calculateSpeedFromMatches(matchData, self.gsd_x,self.gsd_y)
                         speedScorePairs.append((speed, score))
 
                         # calculate new speed from list by a weighted mean, discarding anomalies

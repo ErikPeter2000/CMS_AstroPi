@@ -25,7 +25,8 @@ from queue import Queue
 ROOT_FOLDER = (Path(__file__).parent).resolve()
 MAX_CALC_TIME = 585 # seconds 585s=9m45s
 INTERVAL = 5 # seconds. Bear in mind that the camera takes an additional two seconds to capture an image
-GSD = 0.1243 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
+GSD_X = 0.10562805 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
+GSD_Y = 0.10220732
 IMAGE_INTERVAL = 3 # Save every nth image
 REQUIRED_IMAGES_FOR_MATCH = 2 # The number of images needed to calculate a match
 
@@ -86,7 +87,7 @@ def main():
     with SensorDumpWrapper(ROOT_FOLDER) as sensorDumper:
         logger.info("Initialised SensorDumper")
         try:
-            with SpeedWorker(GSD) as speedWorker:
+            with SpeedWorker(GSD_X,GSD_Y) as speedWorker:
                 # initialise the worker thread. We ensure that it is closed in the finally block
                 # the target function is the work loop in the speedworker class, that will dequeue image pairs and calculate the speed until cancelled
                 speedThread = threading.Thread(target=speedWorker.work)
