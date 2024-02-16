@@ -19,14 +19,15 @@ REJECTION = 1 # Value that increases the denomination in the score calculation. 
 DISTANCE_DEV_SCALE = 0.1 # Value that scales the deviation of the distance. Corrects the deviation to be more in line with the deviation of the angle
 ANGLE_DEV_SCALE = 10 # Value that scales the deviation of the angle. Corrects the deviation to be more in line with the deviation of the distance
 DISCARD_PERCENTILE = 20 # Percentile of values to discard before calculating the weighted mean
+GSD = 0.1268 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
+GSD_X = 0.1268 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
+GSD_Y = 0.168 # km/pixel. This is for a 5mm lens, 400km alt, 2464pixel height, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
 
 class SpeedWorker(Worker):
     """Worker that calculates the speed from a queue of `ImagePairs`"""
-    def __init__(self, gsd_x,gsd_y):
+    def __init__(self):
         """Worker that calculates the speed from a queue of `ImagePairs`"""
         super().__init__()
-        self.gsd_x = gsd_x
-        self.gsd_y = gsd_y
         self._Worker__value = 0
 
     def calculateScore(self, speed, d0, d1):
@@ -43,7 +44,7 @@ class SpeedWorker(Worker):
         speedDenominator = ((speed-EXPECTED)/ACCEPTANCE)**EXPECTED_FALLOFF
         return 1/(devDenominator*speedDenominator+1)
 
-    def calculateSpeedFromMatches(self, match_data, gsd_x,gsd_y):
+    def calculateSpeedFromMatches(self, match_data):
         """Returns the speed and score from a set of matches and a specified Ground Sample Distance (gsd)"""
         # extract coordinates from match data
         coords1 = match_data.coordinates_1
@@ -60,14 +61,14 @@ class SpeedWorker(Worker):
             y1 = coords1[i][1]
             x2 = coords2[i][0]
             y2 = coords2[i][1]
-            distance = math.sqrt(((x2-x1)*math.sqrt(gsd_x))**2 + ((y2-y1)*math.sqrt(gsd_y))**2)
+            distance = math.hypot((x2-x1), (y2-y1))
             distances.append(distance)
             angle = math.atan2((y2-y1),(x2-x1))
             angles.append(angle)
 
         # calculate the mean and deviations for distance and angle
         meanDistance, devDistance = meanAndDeviation(distances)
-        meanSpeed = meanDistance/time
+        meanSpeed = meanDistance*GSD/time
         devAngle = standardDeviationAngles(angles)
         devDistance*=DISTANCE_DEV_SCALE
         devAngle*=ANGLE_DEV_SCALE
@@ -88,7 +89,7 @@ class SpeedWorker(Worker):
                         matchData = cv2Matcher.calculateMatches(imagePair)
 
                         # calculate speed score and append to list
-                        speed, score = self.calculateSpeedFromMatches(matchData, self.gsd_x,self.gsd_y)
+                        speed, score = self.calculateSpeedFromMatches(matchData)
                         speedScorePairs.append((speed, score))
 
                         # calculate new speed from list by a weighted mean, discarding anomalies
