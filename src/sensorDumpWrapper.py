@@ -17,6 +17,8 @@ HEADER = "time,yaw,pitch,roll,compassNorth,magnetometerX,magnetometerY,magnetome
 class SensorDumpWrapper:
     """Manages dumping sensor data to a csv and saving images."""
     def __init__(self, directory):
+        # create the dump folder
+        self.dumpFolder = directory
         # create and open the csv file
         self.csvPath = os.path.join(self.dumpFolder, "data.csv")
         self.file = open(self.csvPath, "w")
@@ -54,10 +56,10 @@ class SensorDumpWrapper:
             logger.error(f"Image {path} does not exist. Could not copy to data folder.")
             return
         elif (not self.spaceRemaining(imageSize)):
-            logger.warn(f"Insufficient space remaining to store image {path}.")
+            logger.error(f"Insufficient space remaining to store image {path}.")
             return
         elif (self.imageIndex >= IMAGE_LIMIT):
-            logger.warn(f"Image limit reached. Could not store image {path}.")
+            logger.error(f"Image limit reached. Could not store image {path}.")
             return
         else:
             imageName = f"image_{datetime.now().strftime('%Y-%m-%d_%H%M%S%f')}.jpg"
