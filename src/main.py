@@ -10,9 +10,9 @@
 
 from sensorDumpWrapper import SensorDumpWrapper
 from cameraWrapper import CameraWrapper
-
 from speedWorker import SpeedWorker
 from cv2Matcher import ImagePair, imageToCv2, timeDifference
+
 import threading
 from datetime import datetime
 from pathlib import Path
@@ -64,7 +64,7 @@ def speedLoop(speedWorker, camera, sensorDumper, imageQueue):
         imageQueue.put(currentImagePath) # enqueue the image for future match calculation
         
         # if there are two images to match, calculate the time difference and enqueue the match data for the speed worker
-        if (imageQueue.qsize() == REQUIRED_IMAGES_FOR_MATCH): # if there are two images to match...
+        if (imageQueue.qsize() >= REQUIRED_IMAGES_FOR_MATCH): # if there are two images to match...
             imageOld = imageQueue.get() # dequeue the oldest image
             imageNew = imageQueue.queue[0] # peek at the newer image
             imageOldCv2 = imageToCv2(imageOld) # convert the images to cv2 images
