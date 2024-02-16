@@ -25,8 +25,8 @@ from queue import Queue
 ROOT_FOLDER = (Path(__file__).parent).resolve()
 MAX_CALC_TIME = 585 # seconds 585s=9m45s
 INTERVAL = 5 # seconds. Bear in mind that the camera takes an additional two seconds to capture an image
-GSD_X = 0.10562805 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
-GSD_Y = 0.10220732
+GSD_X = 0.1268 # km/pixel. This is for a 5mm lens, 400km alt, 3280pixel width, 5.095mm sensor. Use 0.1036 km/pixel for 6mm lens.
+GSD_Y = 0.1633
 IMAGE_INTERVAL = 3 # Save every nth image
 REQUIRED_IMAGES_FOR_MATCH = 2 # The number of images needed to calculate a match
 
