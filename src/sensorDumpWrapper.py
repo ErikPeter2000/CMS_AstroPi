@@ -56,10 +56,10 @@ class SensorDumpWrapper:
             logger.error(f"Image {path} does not exist. Could not copy to data folder.")
             return
         elif (not self.spaceRemaining(imageSize)):
-            logger.error(f"Insufficient space remaining to store image {path}.")
+            logger.warn(f"Insufficient space remaining to store image {path}.")
             return
         elif (self.imageIndex >= IMAGE_LIMIT):
-            logger.error(f"Image limit reached. Could not store image {path}.")
+            logger.warn(f"Image limit reached. Could not store image {path}.")
             return
         else:
             imageName = f"image_{datetime.now().strftime('%Y-%m-%d_%H%M%S%f')}.jpg"
