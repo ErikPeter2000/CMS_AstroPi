@@ -7,7 +7,7 @@ import shutil
 from logzero import logger
 from datetime import datetime
 
-DATA_CAPACITY_BYTES = 260000000 # 260MB
+DATA_CAPACITY_BYTES = 250000000 # 260MB
 IMAGE_LIMIT= 41
 APPROXIMATE_IMAGE_SIZE_BYTES = 5000000 # 5MB
 
