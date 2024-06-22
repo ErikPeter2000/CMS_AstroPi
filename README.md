@@ -24,7 +24,7 @@ Developed in [Python 3.11.5](https://www.python.org/).
  - [Speed Profile for Scoring System](https://www.desmos.com/calculator/we4vr4yio8): Shows how scores are given to speeds in our calculations.
 
 ## Results Summary
-Our program predicted a speed of 9.9km/s, as opposed to the accepted 7.7km/s (29%). Unfortunately we didn't fly over any land so feature detection was poor and mostly captured clouds.
+Our program calculated a speed of 9.9km/s, as opposed to the accepted 7.7km/s (29%). Unfortunately we didn't fly over any land so feature detection was poor and mostly captured clouds.
 It ran on 24-04-28 22:25:09 UTC.
 
 ## Our Team
