@@ -1,5 +1,5 @@
 # CMS_AstroPi
-This is our python code for [AstroPi](https://astro-pi.org/) 2024, written by students at the [Cambridge Maths School](https://cms.tela.org.uk/).  
+This was our python code for [AstroPi](https://astro-pi.org/) 2024, written by students at the [Cambridge Maths School](https://cms.tela.org.uk/).  
 We are working on [Mission Space Lab](https://astro-pi.org/mission-space-lab) with Richard from RaspberryPi to try and determine the speed of the ISS, whilst also gathering useful data to analyse after the mission.  
 Developed in [Python 3.11.5](https://www.python.org/).
 
@@ -22,6 +22,10 @@ Developed in [Python 3.11.5](https://www.python.org/).
  - [Disallowed Libraries](https://docs.google.com/spreadsheets/d/1EoVzgA8gOiDXsJ1k9dQBdPyFC8U3bXFca2dRmdKNbcI/edit#gid=0)
  - [Sense Hat API](https://pythonhosted.org/sense-hat/api/)
  - [Speed Profile for Scoring System](https://www.desmos.com/calculator/we4vr4yio8): Shows how scores are given to speeds in our calculations.
+
+## Results Summary
+Our program predicted a speed of 9.9km/s, as opposed to the accepted 7.7km/s (29%). Unfortunately we didn't fly over any land so feature detection was poor and mostly captured clouds.
+It ran on 24-04-28 22:25:09 UTC.
 
 ## Our Team
 Official Team Name: **Pie-Guys**.  
